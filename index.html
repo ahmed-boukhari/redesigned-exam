@@ -1,364 +1,2307 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USMLE Master - Medical Learning Game</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <title>USMLE Pharmacology Quiz</title>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <style>
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .pulse-glow { animation: pulseGlow 2s ease-in-out infinite alternate; }
-        @keyframes pulseGlow { from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } to { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .topic-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .topic-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .topic-btn.active,
+        .topic-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .explanation h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #667eea;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-card {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div id="root"></div>
 
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
 
-<script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // Game data
-    const gameData = {
-        1: {
-            name: "Step 1: Basic Sciences",
-            color: "bg-blue-500",
-            questions: [
-                {
-                    question: "A 45-year-old man presents with chest pain. ECG shows ST elevations in leads II, III, and aVF. Which coronary artery is most likely occluded?",
-                    options: ["Left anterior descending (LAD)", "Right coronary artery (RCA)", "Left circumflex (LCX)", "Posterior descending artery"],
-                    correct: 1,
-                    explanation: "ST elevations in leads II, III, and aVF indicate an inferior wall MI, typically caused by RCA occlusion.",
-                    topic: "Cardiology"
-                },
-                {
-                    question: "Which enzyme is deficient in phenylketonuria (PKU)?",
-                    options: ["Tyrosinase", "Phenylalanine hydroxylase", "Homogentisic acid oxidase", "Branched-chain α-keto acid dehydrogenase"],
-                    correct: 1,
-                    explanation: "PKU is caused by deficiency of phenylalanine hydroxylase, leading to phenylalanine accumulation.",
-                    topic: "Biochemistry"
-                }
-            ]
-        },
-        2: {
-            name: "Step 2 CK: Clinical Knowledge", 
-            color: "bg-green-500",
-            questions: [
-                {
-                    question: "A 35-year-old woman presents with fatigue, weight gain, and cold intolerance. TSH is elevated, free T4 is low. What is the most appropriate initial treatment?",
-                    options: ["Methimazole", "Levothyroxine", "Propylthiouracil", "Radioactive iodine"],
-                    correct: 1,
-                    explanation: "High TSH with low free T4 indicates primary hypothyroidism. Levothyroxine is first-line treatment.",
-                    topic: "Endocrinology"
-                },
-                {
-                    question: "A 2-year-old child presents with barking cough and stridor. Temperature is 100.5°F. What is the most likely diagnosis?",
-                    options: ["Epiglottitis", "Croup (laryngotracheobronchitis)", "Bacterial pneumonia", "Foreign body aspiration"],
-                    correct: 1,
-                    explanation: "Barking cough and stridor in a young child with low-grade fever is classic for croup.",
-                    topic: "Pediatrics"
-                }
-            ]
-        },
-        3: {
-            name: "Step 3: Clinical Practice",
-            color: "bg-red-500", 
-            questions: [
-                {
-                    question: "A 55-year-old diabetic patient's HbA1c is 8.5% despite metformin therapy. Blood pressure is 145/90 mmHg. What are the most appropriate next steps?",
-                    options: ["Add sulfonylurea only", "Add ACE inhibitor and sulfonylurea", "Switch to insulin therapy", "Add ACE inhibitor and GLP-1 agonist"],
-                    correct: 3,
-                    explanation: "Patient needs both diabetes and hypertension management. ACE inhibitors provide renal protection, GLP-1 agonists offer cardiovascular benefits.",
-                    topic: "Internal Medicine"
-                },
-                {
-                    question: "A patient presents to the ED with altered mental status. Which is the most appropriate initial diagnostic approach?",
-                    options: ["CT head first, then labs", "Glucose check, then comprehensive workup", "Lumbar puncture immediately", "EEG to rule out seizure"],
-                    correct: 1,
-                    explanation: "Always check glucose first for altered mental status as hypoglycemia is rapidly reversible and life-threatening.",
-                    topic: "Emergency Medicine"
-                }
-            ]
-        }
-    };
-
-    const USMLEGame = () => {
-        const [currentLevel, setCurrentLevel] = useState(1);
-        const [currentQuestion, setCurrentQuestion] = useState(0);
-        const [score, setScore] = useState(0);
-        const [selectedAnswer, setSelectedAnswer] = useState(null);
-        const [showExplanation, setShowExplanation] = useState(false);
-        const [streak, setStreak] = useState(0);
-        const [gamePhase, setGamePhase] = useState('menu');
-        const [bestScore, setBestScore] = useState(0);
-
-        // Load saved data
-        useEffect(() => {
-            const saved = parseInt(localStorage.getItem('usmle-best-score') || '0');
-            setBestScore(saved);
-        }, []);
-
-        // Save best score
-        useEffect(() => {
-            if (score > bestScore) {
-                setBestScore(score);
-                localStorage.setItem('usmle-best-score', score.toString());
+        const questionBank = [
+            // Pharmacokinetics Questions
+            {
+                id: 1,
+                topic: "Pharmacokinetics",
+                difficulty: "Medium",
+                question: "A 25-year-old patient receives 400 mg of a drug intravenously. After 4 hours, the plasma concentration is 50 mg/L. If the drug follows first-order elimination kinetics and has an elimination half-life of 4 hours, what was the volume of distribution?",
+                options: [
+                    "4 L",
+                    "8 L",
+                    "16 L",
+                    "20 L",
+                    "32 L"
+                ],
+                correct: 1,
+                explanation: "Using first-order kinetics: After 1 half-life (4 hours), the concentration would be 50% of C⁰. So C⁰ = 50 × 2 = 100 mg/L. Using Vd = Dose/C⁰: Vd = 400 mg / 100 mg/L = 4 L. However, this gives us 4L at time zero. Since we measured 50 mg/L after 4 hours (1 half-life), we need to work backwards: Vd = 400 mg / 50 mg/L = 8 L."
+            },
+            {
+                id: 2,
+                topic: "Pharmacokinetics",
+                difficulty: "Easy",
+                question: "Which route of drug administration has 100% bioavailability by definition?",
+                options: [
+                    "Oral (PO)",
+                    "Intramuscular (IM)",
+                    "Subcutaneous (SC)",
+                    "Intravenous (IV)",
+                    "Sublingual"
+                ],
+                correct: 3,
+                explanation: "Intravenous administration bypasses absorption processes entirely since the drug is delivered directly into the systemic circulation. By definition, IV administration has 100% bioavailability (f = 1.0)."
+            },
+            {
+                id: 3,
+                topic: "Pharmacokinetics",
+                difficulty: "Hard",
+                question: "A patient with normal kidney function has an inulin clearance of 120 mL/min. A drug that is 60% plasma protein bound has a measured renal clearance of 30 mL/min. What can you conclude about this drug's renal handling?",
+                options: [
+                    "The drug undergoes only glomerular filtration",
+                    "The drug undergoes net tubular secretion",
+                    "The drug undergoes net tubular reabsorption",
+                    "The drug is actively transported out of urine",
+                    "The clearance measurement is erroneous"
+                ],
+                correct: 2,
+                explanation: "Free fraction = 40% (since 60% protein bound). Expected filtration clearance = 120 mL/min × 0.4 = 48 mL/min. Since actual clearance (30 mL/min) < expected filtration clearance (48 mL/min), there must be net tubular reabsorption of 18 mL/min."
+            },
+            {
+                id: 4,
+                topic: "Pharmacokinetics",
+                difficulty: "Medium",
+                question: "A weak acid drug (pKa = 4.4) is administered to a patient. In which body compartment would you expect the highest concentration of the unionized (lipid-soluble) form?",
+                options: [
+                    "Stomach (pH 1.4)",
+                    "Small intestine (pH 8.0)",
+                    "Blood (pH 7.4)",
+                    "Urine (pH 6.0)",
+                    "All compartments would have equal concentrations"
+                ],
+                correct: 0,
+                explanation: "For weak acids, the unionized form predominates when pH < pKa. In the stomach (pH 1.4), which is 3 units below the pKa of 4.4, the drug will be >99% unionized and lipid-soluble, allowing better membrane penetration."
+            },
+            {
+                id: 5,
+                topic: "Pharmacokinetics",
+                difficulty: "Medium",
+                question: "A drug with a half-life of 6 hours is administered by continuous IV infusion. How long will it take to reach 90% of steady-state plasma concentration?",
+                options: [
+                    "6 hours",
+                    "12 hours",
+                    "18 hours",
+                    "20 hours",
+                    "30 hours"
+                ],
+                correct: 3,
+                explanation: "90% of steady-state is reached at approximately 3.3 half-lives. With a half-life of 6 hours: 3.3 × 6 = 19.8 ≈ 20 hours. The time to reach steady-state is independent of dose and depends only on the elimination half-life."
+            },
+            {
+                id: 6,
+                topic: "Pharmacodynamics",
+                difficulty: "Easy",
+                question: "In a graded dose-response curve, what does the maximal height of the curve represent?",
+                options: [
+                    "Affinity",
+                    "Potency",
+                    "Efficacy",
+                    "Therapeutic index",
+                    "Half-maximal effective concentration"
+                ],
+                correct: 2,
+                explanation: "Efficacy is the maximal effect that a drug can produce, regardless of dose. It is represented by the maximal height (plateau) of the dose-response curve. This differs from potency, which relates to the dose required to achieve a given effect."
+            },
+            {
+                id: 7,
+                topic: "Pharmacodynamics",
+                difficulty: "Medium",
+                question: "A competitive antagonist will cause which change in the agonist's dose-response curve?",
+                options: [
+                    "Parallel shift to the left",
+                    "Parallel shift to the right",
+                    "Non-parallel shift to the right with decreased maximum",
+                    "Non-parallel shift to the left with increased maximum",
+                    "No change in the curve"
+                ],
+                correct: 1,
+                explanation: "Competitive antagonists bind reversibly to the same receptor site as the agonist. They can be overcome by increasing agonist concentration, causing a parallel rightward shift (decreased apparent potency) without changing the maximum response (efficacy remains unchanged)."
+            },
+            {
+                id: 8,
+                topic: "Pharmacodynamics",
+                difficulty: "Hard",
+                question: "A partial agonist with 60% intrinsic activity is administered to a patient already receiving a full agonist that produces 100% response. What will be the net effect?",
+                options: [
+                    "Response increases to 160%",
+                    "Response remains at 100%",
+                    "Response decreases to 60%",
+                    "Response increases to 80%",
+                    "Response becomes unpredictable"
+                ],
+                correct: 2,
+                explanation: "Partial agonists exhibit 'dual behavior.' When added to a system with full agonist producing maximal response, the partial agonist will displace the full agonist from receptors but can only produce its own maximal response (60% in this case), effectively acting as an antagonist."
+            },
+            {
+                id: 9,
+                topic: "Drug Metabolism",
+                difficulty: "Medium",
+                question: "A patient is prescribed warfarin and phenytoin concurrently. Both drugs are highly bound to plasma proteins and have narrow therapeutic ranges. What is the primary concern with this combination?",
+                options: [
+                    "Increased metabolism of both drugs",
+                    "Decreased absorption of warfarin",
+                    "Displacement interaction increasing free drug concentrations",
+                    "Enhanced first-pass metabolism",
+                    "Reduced bioavailability of phenytoin"
+                ],
+                correct: 2,
+                explanation: "Both warfarin and phenytoin are highly protein-bound drugs with narrow therapeutic ranges. They can compete for the same binding sites on plasma proteins, potentially displacing each other and increasing free (active) drug concentrations, leading to enhanced effects and potential toxicity."
+            },
+            {
+                id: 10,
+                topic: "Drug Metabolism",
+                difficulty: "Medium",
+                question: "A patient taking oral contraceptives is prescribed rifampin for tuberculosis treatment. What effect would you expect on contraceptive efficacy?",
+                options: [
+                    "No change in efficacy",
+                    "Increased efficacy due to enzyme inhibition",
+                    "Decreased efficacy due to enzyme induction",
+                    "Delayed onset of contraceptive action",
+                    "Enhanced side effects of contraceptives"
+                ],
+                correct: 2,
+                explanation: "Rifampin is a potent inducer of CYP450 enzymes, particularly CYP3A4, which metabolizes oral contraceptive hormones. Enzyme induction increases metabolism of contraceptive hormones, reducing their plasma levels and effectiveness, potentially leading to contraceptive failure."
+            },
+            {
+                id: 11,
+                topic: "Pharmacokinetics",
+                difficulty: "Hard",
+                question: "A lipophilic anesthetic drug is administered intravenously for a surgical procedure. The drug rapidly crosses the blood-brain barrier and produces immediate anesthesia, but the effect wears off quickly despite the drug having a long elimination half-life. What explains this phenomenon?",
+                options: [
+                    "The drug undergoes rapid hepatic metabolism",
+                    "The drug is quickly excreted by the kidneys",
+                    "The drug redistributes from brain to fat tissue",
+                    "The drug develops acute tolerance",
+                    "The blood-brain barrier becomes less permeable"
+                ],
+                correct: 2,
+                explanation: "This describes redistribution pharmacokinetics. The lipophilic drug rapidly enters the highly vascularized brain tissue, causing immediate effects. However, it then redistributes to less vascularized fat tissue, reducing brain concentrations and terminating the effect despite having a long overall elimination half-life."
+            },
+            {
+                id: 12,
+                topic: "Pharmacodynamics",
+                difficulty: "Medium",
+                question: "A new drug shows an ED50 of 10 mg and TD50 of 100 mg in clinical trials. What is the therapeutic index, and what does this suggest about the drug's safety profile?",
+                options: [
+                    "TI = 0.1; very narrow safety margin",
+                    "TI = 10; relatively safe drug",
+                    "TI = 50; extremely safe drug",
+                    "TI = 110; moderately safe drug",
+                    "Cannot be determined from given data"
+                ],
+                correct: 1,
+                explanation: "Therapeutic Index (TI) = TD50/ED50 = 100mg/10mg = 10. A TI of 10 indicates that the toxic dose is 10 times higher than the effective dose, suggesting a relatively good safety margin. Higher TI values indicate safer drugs."
+            },
+            {
+                id: 13,
+                topic: "Drug Metabolism",
+                difficulty: "Easy",
+                question: "Which phase of drug metabolism typically makes compounds MORE water-soluble for easier excretion?",
+                options: [
+                    "Only Phase I reactions",
+                    "Only Phase II reactions",
+                    "Both Phase I and Phase II reactions",
+                    "Neither phase affects water solubility",
+                    "Phase III reactions only"
+                ],
+                correct: 2,
+                explanation: "Both Phase I (oxidation, reduction, hydrolysis) and Phase II (conjugation) reactions generally increase water solubility. Phase I often introduces polar groups (-OH, -NH2), while Phase II conjugates drugs with highly polar endogenous compounds (glucuronide, sulfate, glutathione)."
+            },
+            {
+                id: 14,
+                topic: "Pharmacokinetics",
+                difficulty: "Medium",
+                question: "A patient overdoses on aspirin. To enhance elimination, the physician decides to manipulate urine pH. Aspirin is a weak acid with pKa = 3.5. What intervention would be most effective?",
+                options: [
+                    "Acidify urine with ammonium chloride",
+                    "Alkalinize urine with sodium bicarbonate",
+                    "Maintain neutral urine pH",
+                    "Use forced diuresis regardless of pH",
+                    "pH manipulation won't affect aspirin elimination"
+                ],
+                correct: 1,
+                explanation: "Alkalinizing urine increases ionization of weak acids like aspirin. Ionized forms are 'trapped' in urine and cannot be reabsorbed, enhancing elimination. Sodium bicarbonate is commonly used to alkalinize urine in salicylate poisoning."
+            },
+            {
+                id: 15,
+                topic: "Pharmacodynamics",
+                difficulty: "Hard",
+                question: "Two drugs, A and B, produce the same maximal response but drug A requires 1 mg while drug B requires 10 mg to achieve 50% of maximal response. Drug A is administered with a non-competitive antagonist. Which statement is correct?",
+                options: [
+                    "Drug A is more efficacious than drug B",
+                    "Drug A is more potent than drug B",
+                    "The non-competitive antagonist will shift drug A's curve to the right",
+                    "The non-competitive antagonist will reduce drug A's maximal response",
+                    "Both B and D are correct"
+                ],
+                correct: 4,
+                explanation: "Drug A is more potent (requires less dose for same effect) but both have equal efficacy (same maximal response). Non-competitive antagonists reduce maximal response and cannot be overcome by increasing agonist dose, distinguishing them from competitive antagonists."
+            },
+            {
+                "id": 11,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Easy",
+                "question": "Which of the following factors is most important for drug permeation across lipid bilayers?",
+                "options": [
+                    "Water solubility only",
+                    "Lipid solubility",
+                    "Molecular weight",
+                    "Protein binding",
+                    "Ionization state only"
+                ],
+                "correct": 1,
+                "explanation": "According to the text, 'Ability to diffuse through lipid bilayers (lipid solubility) is important for most drugs' as it determines permeation across cellular membrane barriers."
+            },
+            {
+                "id": 12,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "For weak acids and weak bases, which form crosses biomembranes?",
+                "options": [
+                    "Only the ionized form",
+                    "Only the nonionized (uncharged) form",
+                    "Both forms equally",
+                    "The form with higher concentration",
+                    "Neither form can cross"
+                ],
+                "correct": 1,
+                "explanation": "The text clearly states: 'Only the nonionized (uncharged) form of a drug crosses biomembranes.' The ionized form is trapped and cannot cross lipid membranes."
+            },
+            {
+                "id": 13,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "What happens to renal clearance when urine is acidified in a patient who has overdosed on a weak base?",
+                "options": [
+                    "Renal clearance decreases",
+                    "Renal clearance increases",
+                    "Renal clearance remains unchanged",
+                    "The drug becomes protein-bound",
+                    "The drug undergoes hepatic metabolism"
+                ],
+                "correct": 1,
+                "explanation": "The text states: 'Acidification of urine → increases ionization of weak bases → increases renal elimination.' Ionized forms are 'trapped' in the filtrate and better excreted."
+            },
+            {
+                "id": 14,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Easy",
+                "question": "Which mode of drug transport can move drugs against a concentration gradient?",
+                "options": [
+                    "Passive diffusion",
+                    "Facilitated diffusion",
+                    "Active transport",
+                    "Simple diffusion",
+                    "Bulk flow"
+                ],
+                "correct": 2,
+                "explanation": "According to Table I-1-1, active transport can move against gradients, requires energy, uses a carrier, and is saturable, unlike passive or facilitated diffusion."
+            },
+            {
+                "id": 15,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Easy",
+                "question": "What is the bioavailability of a drug administered intravenously?",
+                "options": [
+                    "50%",
+                    "75%",
+                    "90%",
+                    "100%",
+                    "Variable depending on the drug"
+                ],
+                "correct": 3,
+                "explanation": "The text states: 'Intravascular administration (e.g., IV) does not involve absorption, and there is no loss of drug. Bioavailability = 100%'"
+            },
+            {
+                "id": 16,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "The first-pass effect primarily affects which route of administration?",
+                "options": [
+                    "Intravenous",
+                    "Intramuscular",
+                    "Oral",
+                    "Subcutaneous",
+                    "Inhalation"
+                ],
+                "correct": 2,
+                "explanation": "The text explains: 'With oral administration, drugs are absorbed into the portal circulation and initially distributed to the liver. For some drugs, their rapid hepatic metabolism decreases bioavailability, i.e., the first-pass effect.'"
+            },
+            {
+                "id": 17,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "A drug with high plasma protein binding would have which characteristic?",
+                "options": [
+                    "High volume of distribution (Vd)",
+                    "Low volume of distribution (Vd)",
+                    "Variable Vd depending on dose",
+                    "Rapid renal elimination",
+                    "Enhanced brain penetration"
+                ],
+                "correct": 1,
+                "explanation": "The text states: 'Vd is low when a high percentage of a drug is bound to plasma proteins' because protein binding keeps the drug in the plasma compartment."
+            },
+            {
+                "id": 18,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Hard",
+                "question": "A lipophilic anesthetic drug is administered intravenously. It rapidly produces anesthesia but the effect wears off quickly despite having a long elimination half-life. What explains this phenomenon?",
+                "options": [
+                    "The drug undergoes rapid hepatic metabolism",
+                    "The drug is quickly excreted by the kidneys",
+                    "The drug redistributes from brain to fat tissue",
+                    "The drug develops acute tolerance",
+                    "The blood-brain barrier becomes less permeable"
+                ],
+                "correct": 2,
+                "explanation": "This describes redistribution pharmacokinetics. The text explains: 'In the case of CNS drugs, the duration of action of an initial dose may depend more on the redistribution rate than on the half-life.' The drug redistributes from the highly vascularized brain to fat tissue."
+            },
+            {
+                "id": 19,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "Which CYP450 isozyme metabolizes approximately 60% of drugs in clinical use?",
+                "options": [
+                    "CYP1A2",
+                    "CYP2C9",
+                    "CYP2D6",
+                    "CYP3A4",
+                    "CYP2E1"
+                ],
+                "correct": 3,
+                "explanation": "According to Table I-1-2, CYP3A4 metabolizes '60% of drugs in PDR' and is inhibited by general inhibitors and grapefruit juice."
+            },
+            {
+                "id": 110,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "Which Phase II conjugation reaction shows genetic polymorphisms with fast and slow metabolizers?",
+                "options": [
+                    "Glucuronidation",
+                    "Acetylation",
+                    "Glutathione conjugation",
+                    "Sulfation",
+                    "Methylation"
+                ],
+                "correct": 1,
+                "explanation": "The text specifically states: 'Acetylation - Genotypic variations (fast and slow metabolizers)' and notes that slow acetylators are prone to 'Drug-induced SLE by slow acetylators with hydralazine > procainamide > isoniazid (INH).'"
+            },
+            {
+                "id": 111,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Hard",
+                "question": "A patient is given 200mg of a drug intravenously. After 4 hours, 100mg remains. If the drug follows first-order kinetics, how much will remain after 12 hours?",
+                "options": [
+                    "50 mg",
+                    "25 mg",
+                    "12.5 mg",
+                    "6.25 mg",
+                    "0 mg"
+                ],
+                "correct": 1,
+                "explanation": "The half-life is 4 hours (200→100mg in 4h). After 12 hours, 3 half-lives have passed: 200mg→100mg→50mg→25mg. This matches the example given in the practice questions."
+            },
+            {
+                "id": 112,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Medium",
+                "question": "In zero-order elimination kinetics:",
+                "options": [
+                    "A constant fraction is eliminated per unit time",
+                    "A constant amount is eliminated per unit time",
+                    "The half-life is constant",
+                    "Most drugs follow this pattern",
+                    "The rate depends on plasma concentration"
+                ],
+                "correct": 1,
+                "explanation": "The text defines zero-order elimination: 'a constant amount of drug is eliminated per unit time' and 'The rate of elimination is independent of plasma concentration.' Examples include ethanol and phenytoin at high doses."
+            },
+            {
+                "id": 113,
+                "topic": "Pharmacokinetics",
+                "difficulty": "Easy",
+                "question": "According to the plateau principle, what percentage of steady state is reached after 3.3 half-lives?",
+                "options": [
+                    "50%",
+                    "75%",
+                    "90%",
+                    "95%",
+                    "100%"
+                ],
+                "correct": 2,
+                "explanation": "The text provides 'Classic Clues' for steady state timing: '50% = 1 × half-life, 90% = 3.3 × half-life, 95% = 4–5 × half-life.'"
+            },
+            {
+                "id": 114,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Easy",
+                "question": "A drug that binds to a receptor and produces a response is called:",
+                "options": [
+                    "An antagonist",
+                    "An agonist",
+                    "A partial agonist",
+                    "A competitive inhibitor",
+                    "An inverse agonist"
+                ],
+                "correct": 1,
+                "explanation": "The text defines: 'A drug is called an agonist when binding to the receptor results in a response,' while 'A drug is called an antagonist when binding to the receptor is not associated with a response.'"
+            },
+            {
+                "id": 115,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Medium",
+                "question": "In dose-response curves, what does efficacy represent?",
+                "options": [
+                    "The ability of a drug to bind to a receptor",
+                    "The dose required to produce 50% response",
+                    "The maximal effect a drug can produce",
+                    "The slope of the dose-response curve",
+                    "The time to reach peak effect"
+                ],
+                "correct": 2,
+                "explanation": "The text defines efficacy as: 'a measure of how well a drug produces a response (effectiveness), shown by the maximal height reached by the curve.' This is analogous to Vmax in enzyme kinetics."
+            },
+            {
+                "id": 116,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Medium",
+                "question": "A competitive antagonist causes what change in an agonist's dose-response curve?",
+                "options": [
+                    "Parallel shift to the left",
+                    "Parallel shift to the right",
+                    "Non-parallel shift to the left",
+                    "Non-parallel shift to the right",
+                    "No change in the curve"
+                ],
+                "correct": 1,
+                "explanation": "The text states that competitive antagonists 'cause parallel shift to the right in D-R curve for agonists' and 'Can be reversed by increasing dose of agonist drug' while appearing to 'decrease potency of agonist.'"
+            },
+            {
+                "id": 117,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Hard",
+                "question": "A partial agonist is administered to a patient already receiving a full agonist for the same receptor. What will be the net effect?",
+                "options": [
+                    "Enhanced response (synergism)",
+                    "Reduced response (antagonism)",
+                    "No change in response",
+                    "Biphasic response",
+                    "Toxic effects"
+                ],
+                "correct": 1,
+                "explanation": "The text explains the 'Duality of Partial Agonists': when a partial agonist displaces a full agonist from receptors, 'the response is reduced—the partial agonist is acting as an antagonist' because it has lower efficacy than the full agonist."
+            },
+            {
+                "id": 118,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Medium",
+                "question": "Which G-protein is associated with activation of adenylyl cyclase and increased cAMP production?",
+                "options": [
+                    "Gq proteins",
+                    "Gi proteins",
+                    "Gs proteins",
+                    "Go proteins",
+                    "G12/13 proteins"
+                ],
+                "correct": 2,
+                "explanation": "The text states: 'Binding of agonists to receptors linked to Gs proteins increases cAMP production' and gives examples including 'catecholamines (beta), dopamine (D₁), glucagon, histamine (H₂).'"
+            },
+            {
+                "id": 119,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Medium",
+                "question": "The therapeutic index (TI) is calculated as:",
+                "options": [
+                    "ED50/TD50",
+                    "TD50/ED50",
+                    "LD50/ED50",
+                    "ED50/LD50",
+                    "TD50/LD50"
+                ],
+                "correct": 1,
+                "explanation": "The text shows an example where 'TI = 10/2 = 5' with TD50 = 10 and ED50 = 2, demonstrating that TI = TD50/ED50. A higher TI indicates greater safety margin."
+            },
+            {
+                "id": 120,
+                "topic": "Pharmacodynamics",
+                "difficulty": "Hard",
+                "question": "Nitric oxide (NO) causes vasodilation through which mechanism?",
+                "options": [
+                    "Activation of adenylyl cyclase and increased cAMP",
+                    "Activation of phospholipase C and increased IP3",
+                    "Activation of guanylyl cyclase and increased cGMP",
+                    "Direct calcium channel blockade",
+                    "Inhibition of sodium channels"
+                ],
+                "correct": 2,
+                "explanation": "The text explains: 'NO activates guanylyl cyclase, thus increasing cGMP in smooth muscle' and 'Cyclic GMP (cGMP) is a second messenger in vascular smooth muscle that facilitates dephosphorylation of myosin light chains...thus causing vasodilation.'"
+            },
+            {
+                "id": 21,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "The action of botulinum toxin is through which of the following mechanisms?",
+                "options": [
+                    "Direct action on acetylcholine esterase",
+                    "Direct action on muscarinic receptors",
+                    "Prevention of acetylcholine release",
+                    "Prevention of choline uptake"
+                ],
+                "correct": 2,
+                "explanation": "Botulinum toxin prevents acetylcholine release by interfering with synaptobrevin and other proteins required for vesicle fusion and exocytosis."
+            },
+            {
+                "id": 22,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Easy",
+                "question": "Which of the following directly results from activation of the beta 2 receptor?",
+                "options": [
+                    "Decrease in blood pressure",
+                    "Increase in cardiac output",
+                    "Increase in heart rate",
+                    "Increase in stroke volume"
+                ],
+                "correct": 0,
+                "explanation": "Beta-2 receptor activation causes vasodilation, which decreases total peripheral resistance and thus lowers blood pressure."
+            },
+            {
+                "id": 23,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Alpha-1 agonists cause reflex bradycardia, which can be blocked by:",
+                "options": [
+                    "atenolol",
+                    "atropine",
+                    "mirtazapine",
+                    "phenylephrine",
+                    "propranolol"
+                ],
+                "correct": 1,
+                "explanation": "Reflex bradycardia is mediated by muscarinic receptors in the heart; atropine blocks these receptors and thus blocks the reflex."
+            },
+            {
+                "id": 24,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Easy",
+                "question": "Which one of the following effects is caused by the ingestion of mushrooms that contain pilocarpine?",
+                "options": [
+                    "Tachycardia",
+                    "Bronchodilation",
+                    "Diarrhea",
+                    "Hypertension",
+                    "Hyperthermia"
+                ],
+                "correct": 2,
+                "explanation": "Pilocarpine is a muscarinic agonist; muscarinic stimulation in the GI tract causes diarrhea."
+            },
+            {
+                "id": 25,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Increasing the concentration of norepinephrine in adrenergic synapses leads to:",
+                "options": [
+                    "activation of dopa decarboxylase",
+                    "increased release of norepinephrine",
+                    "activation of presynaptic Gi coupled receptors",
+                    "stimulation of MAO",
+                    "activation of tyrosine hydroxylase"
+                ],
+                "correct": 2,
+                "explanation": "Presynaptic alpha-2 receptors are Gi coupled and inhibit further release and synthesis of norepinephrine."
+            },
+            {
+                "id": 26,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Urination in the human subject is decreased by:",
+                "options": [
+                    "muscarinic agonists",
+                    "muscarinic antagonists",
+                    "AChase inhibitors",
+                    "Nicotinic agonists",
+                    "Spider venom"
+                ],
+                "correct": 1,
+                "explanation": "Muscarinic antagonists block bladder contraction, leading to urinary retention."
+            },
+            {
+                "id": 27,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "The activation of muscarinic receptors in bronchiolar smooth muscle is associated with:",
+                "options": [
+                    "activation of adenylyl cyclase",
+                    "decrease in cAMP formation mediated by G-proteins",
+                    "increase in IP3 and DAG",
+                    "inhibition of protein kinase C",
+                    "opening of Na+/K+ cation channels"
+                ],
+                "correct": 2,
+                "explanation": "M3 muscarinic receptors are Gq coupled, leading to increased IP3 and DAG and smooth muscle contraction."
+            },
+            {
+                "id": 28,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Ganglion blocking agents are important drugs to know for solving cardiovascular drug problems because they can block:",
+                "options": [
+                    "all muscarinic receptors",
+                    "all nicotinic receptors",
+                    "all autonomic reflexes",
+                    "the direct actions of drugs on blood vessels",
+                    "the direct actions of drugs on the heart"
+                ],
+                "correct": 2,
+                "explanation": "Ganglion blockers block N_N receptors at autonomic ganglia, preventing all autonomic reflexes."
+            },
+            {
+                "id": 29,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "A 5-year-old child becomes ill with severe abdominal cramps, vomiting, diarrhea, lacrimation, salivation, and marked pupillary constriction. The most likely cause is exposure to:",
+                "options": [
+                    "herbicides",
+                    "antifreeze",
+                    "lead-based paint",
+                    "insecticides",
+                    "rat poison"
+                ],
+                "correct": 3,
+                "explanation": "Organophosphate insecticides cause irreversible inhibition of acetylcholinesterase, leading to cholinergic excess."
+            },
+            {
+                "id": 210,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "The activation of muscarinic receptors in bronchiolar smooth muscle is associated with:",
+                "options": [
+                    "activation of adenylyl cyclase",
+                    "decrease in cAMP formation mediated by G-proteins",
+                    "increase in IP3 and DAG",
+                    "inhibition of protein kinase C",
+                    "opening of Na+/K+ cation channels"
+                ],
+                "correct": 2,
+                "explanation": "M3 muscarinic receptors are Gq coupled, leading to increased IP3 and DAG and smooth muscle contraction."
+            },
+            {
+                "id": 211,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Ganglion blocking agents are important drugs to know for solving cardiovascular drug problems because they can block:",
+                "options": [
+                    "all muscarinic receptors",
+                    "all nicotinic receptors",
+                    "all autonomic reflexes",
+                    "the direct actions of drugs on blood vessels",
+                    "the direct actions of drugs on the heart"
+                ],
+                "correct": 2,
+                "explanation": "Ganglion blockers block N_N receptors at autonomic ganglia, preventing all autonomic reflexes."
+            },
+            {
+                "id": 212,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "An 11-year-old boy was brought to the ER after eating seeds from a plant. He was incoherent, had hot dry skin, dilated pupils, high blood pressure, and high pulse. The presumptive diagnosis is toxicity due to ingestion of a compound similar to:",
+                "options": [
+                    "cannabis",
+                    "digoxin",
+                    "mescaline",
+                    "phencyclidine",
+                    "scopolamine"
+                ],
+                "correct": 4,
+                "explanation": "Jimsonweed (Datura stramonium) contains anticholinergic compounds like scopolamine, causing classic antimuscarinic toxicity."
+            },
+            {
+                "id": 213,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Reflex tachycardia caused by the systemic administration of albuterol can be blocked by what drug?",
+                "options": [
+                    "dobutamine",
+                    "prazosin",
+                    "phenylephrine",
+                    "metoprolol",
+                    "low-dose epinephrine"
+                ],
+                "correct": 3,
+                "explanation": "Metoprolol is a beta blocker that blocks the reflex tachycardia caused by beta-2 agonists like albuterol."
+            },
+            {
+                "id": 214,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "A new drug (X) decreases systolic and diastolic blood pressure and increases heart rate. The most probable receptor affinities of drug X are:",
+                "options": [
+                    "α₁, α₂",
+                    "α₁, α₂, β₁",
+                    "β₁, β₂",
+                    "M₂",
+                    "N_(M)"
+                ],
+                "correct": 2,
+                "explanation": "A decrease in BP and increase in HR is characteristic of a drug like isoproterenol, which activates β₁ and β₂ receptors."
+            },
+            {
+                "id": 215,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Easy",
+                "question": "Thermoregulatory sweat glands in the body utilize what type of pathway?",
+                "options": [
+                    "Cholinergic nerves and muscarinic receptors",
+                    "Adrenergic nerves and alpha-1 receptors",
+                    "Adrenergic nerves and beta-2 receptors",
+                    "Cholinergic nerves and N_(M) receptors",
+                    "Neurohumorally-released epinephrine"
+                ],
+                "correct": 0,
+                "explanation": "Sweat glands are innervated by sympathetic cholinergic nerves that release acetylcholine, which acts on muscarinic receptors."
+            },
+            {
+                "id": 216,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Activation of postsynaptic M₂ receptors on the heart is associated with:",
+                "options": [
+                    "activation of adenylyl cyclase",
+                    "decrease in cAMP formation",
+                    "increase in IP₃ and DAG",
+                    "inhibition of protein kinase C",
+                    "opening of Na⁺/K⁺ cation channels"
+                ],
+                "correct": 1,
+                "explanation": "M₂ receptors are Gi coupled, leading to decreased adenylyl cyclase activity and reduced cAMP formation."
+            },
+            {
+                "id": 217,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Prior to an eye exam a patient is given a drug that causes mydriasis but has no effect on accommodation. What is the most likely identity of this drug?",
+                "options": [
+                    "mecamylamine",
+                    "neostigmine",
+                    "pilocarpine",
+                    "phenylephrine",
+                    "tropicamide"
+                ],
+                "correct": 3,
+                "explanation": "Phenylephrine is an alpha-1 agonist that causes mydriasis without affecting accommodation."
+            },
+            {
+                "id": 218,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Following a myocardial infarct, a 40-year-old man is being treated prophylactically with propranolol. You would be concerned about the use of this drug if the patient also had what comorbid condition?",
+                "options": [
+                    "Essential tremor",
+                    "Glaucoma",
+                    "Classic/stable angina",
+                    "Supraventricular tachycardia",
+                    "Diabetes"
+                ],
+                "correct": 4,
+                "explanation": "Propranolol can cause hypoglycemia by blocking glycogenolysis and gluconeogenesis, which is dangerous in diabetic patients."
+            },
+            {
+                "id": 219,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "Following pretreatment with a muscarinic receptor blocking agent, the IV administration of norepinephrine is likely to result in:",
+                "options": [
+                    "↑HR and ↑ BP",
+                    "↑ HR and ↓ BP",
+                    "↓ HR and ↓ BP",
+                    "↓ HR and ↑ BP",
+                    "no effect on HR, but ↑ BP"
+                ],
+                "correct": 0,
+                "explanation": "Muscarinic blockade prevents reflex bradycardia, so NE's direct β₁ effect increases HR and BP."
+            },
+            {
+                "id": 220,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Medium",
+                "question": "A 45-year-old man has recently been the recipient of a heart transplant. Which one of the following drugs is least likely to cause tachycardia in this patient?",
+                "options": [
+                    "Amphetamine",
+                    "Dobutamine",
+                    "Epinephrine",
+                    "Isoproterenol",
+                    "Norepinephrine"
+                ],
+                "correct": 0,
+                "explanation": "Amphetamine is an indirect sympathomimetic and requires innervation, which is absent in transplanted hearts."
+            },
+            {
+                "id": 3101,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Hard",
+                "question": "A patient receives a ganglion blocker. Which of the following effects would you expect in the heart, iris, and arterioles, respectively?",
+                "options": [
+                "Bradycardia, miosis, vasoconstriction",
+                "Tachycardia, mydriasis, vasodilation",
+                "Bradycardia, mydriasis, vasodilation",
+                "Tachycardia, miosis, vasoconstriction",
+                "No change, mydriasis, vasodilation"
+                ],
+                "correct": 1,
+                "explanation": "Ganglion blockers remove dominant autonomic tone: SANS dominates arterioles (vasodilation), PANS dominates heart (tachycardia) and iris (mydriasis)."
+            },
+            {
+                "id": 3102,
+                "topic": "Cholinergic Pharmacology",
+                "difficulty": "Hard",
+                "question": "A patient with myasthenia gravis is treated with neostigmine. Which effect distinguishes neostigmine from pilocarpine?",
+                "options": [
+                "Increased bladder tone",
+                "Increased bowel motility",
+                "Decreased heart rate",
+                "Increased salivation",
+                "Skeletal muscle stimulation"
+                ],
+                "correct": 4,
+                "explanation": "Neostigmine increases skeletal muscle contraction by inhibiting AChE at the neuromuscular junction, while pilocarpine does not affect nicotinic receptors."
+            },
+            {
+                "id": 3103,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Hard",
+                "question": "A patient is given a high dose of epinephrine followed by an alpha-1 blocker. What is the expected change in blood pressure?",
+                "options": [
+                "Further increase in blood pressure",
+                "No change in blood pressure",
+                "Reversal to hypotension",
+                "Transient decrease then normalization",
+                "Unchanged systolic, decreased diastolic"
+                ],
+                "correct": 2,
+                "explanation": "Alpha-1 blockade unmasks beta-2 vasodilation, causing 'epinephrine reversal'—a drop in blood pressure."
+            },
+            {
+                "id": 3104,
+                "topic": "Autonomic Pharmacology",
+                "difficulty": "Hard",
+                "question": "Which neurotransmitter and receptor combination is responsible for thermoregulatory sweating?",
+                "options": [
+                "Norepinephrine acting on alpha-1 receptors",
+                "Acetylcholine acting on muscarinic receptors",
+                "Dopamine acting on D1 receptors",
+                "Epinephrine acting on beta-2 receptors",
+                "Acetylcholine acting on nicotinic receptors"
+                ],
+                "correct": 1,
+                "explanation": "Thermoregulatory sweat glands are innervated by sympathetic cholinergic fibers releasing acetylcholine, which acts on muscarinic receptors."
+            },
+            {
+                "id": 3105,
+                "topic": "Adrenergic Pharmacology",
+                "difficulty": "Hard",
+                "question": "A patient with hypertension is treated with carvedilol. Which property distinguishes carvedilol from propranolol?",
+                "options": [
+                "Selective beta-1 blockade",
+                "Intrinsic sympathomimetic activity",
+                "Alpha-1 receptor blockade",
+                "Available only as eye drops",
+                "Beta-2 receptor stimulation"
+                ],
+                "correct": 2,
+                "explanation": "Carvedilol blocks both alpha-1 and beta receptors, unlike propranolol which is a nonselective beta blocker without alpha-1 blocking activity."
+            },
+            {
+                "id": 4101,
+                "topic": "Sedative-Hypnotic-Anxiolytic Drugs",
+                "difficulty": "Medium",
+                "question": "Which mechanism distinguishes benzodiazepines from barbiturates in their action on GABA receptors?",
+                "options": [
+                "Benzodiazepines increase the frequency of Cl⁻ channel opening",
+                "Benzodiazepines prolong the duration of Cl⁻ channel opening",
+                "Benzodiazepines have GABA mimetic activity at high doses",
+                "Benzodiazepines directly activate GABA receptors",
+                "Benzodiazepines inhibit the electron transport chain"
+                ],
+                "correct": 0,
+                "explanation": "Benzodiazepines potentiate GABA by increasing the frequency of Cl⁻ channel opening, while barbiturates increase the duration. Benzodiazepines have no GABA mimetic activity, unlike barbiturates."
+            },
+            {
+                "id": 4102,
+                "topic": "Sedative-Hypnotic-Anxiolytic Drugs",
+                "difficulty": "Easy",
+                "question": "Flumazenil can reverse the CNS depression caused by which of the following drugs?",
+                "options": [
+                "Phenobarbital",
+                "Ethanol",
+                "Diazepam",
+                "Propofol",
+                "Morphine"
+                ],
+                "correct": 2,
+                "explanation": "Flumazenil is a nonspecific benzodiazepine receptor antagonist that can reverse CNS depression caused by benzodiazepines like diazepam. It cannot reverse depression from barbiturates, alcohol, or other CNS depressants."
+            },
+            {
+                "id": 4103,
+                "topic": "Antidepressants",
+                "difficulty": "Hard",
+                "question": "A patient develops sweating, rigidity, myoclonus, hyperthermia, and autonomic instability after starting fluoxetine while already taking phenelzine. This presentation is most consistent with:",
+                "options": [
+                "Neuroleptic malignant syndrome",
+                "Serotonin syndrome",
+                "Hypertensive crisis",
+                "Anticholinergic toxicity",
+                "Extrapyramidal symptoms"
+                ],
+                "correct": 1,
+                "explanation": "The combination of an SSRI (fluoxetine) with an MAOI (phenelzine) can cause serotonin syndrome, characterized by sweating, rigidity, myoclonus, hyperthermia, and autonomic instability. This is a dangerous drug interaction."
+            },
+            {
+                "id": 4104,
+                "topic": "Bipolar Disorder",
+                "difficulty": "Medium",
+                "question": "Which side effect of lithium therapy requires monitoring with periodic thyroid function tests?",
+                "options": [
+                "Nephrogenic diabetes insipidus",
+                "Hypothyroidism with goiter",
+                "Tremor",
+                "Teratogenicity",
+                "Narrow therapeutic index"
+                ],
+                "correct": 1,
+                "explanation": "Lithium can cause hypothyroidism with goiter by decreasing TSH effects and inhibiting 5'-deiodinase. This requires monitoring with periodic thyroid function tests."
+            },
+            {
+                "id": 4105,
+                "topic": "Parkinson Disease",
+                "difficulty": "Hard",
+                "question": "Why is levodopa given with carbidopa in the treatment of Parkinson disease?",
+                "options": [
+                "Carbidopa enhances dopamine receptor sensitivity",
+                "Carbidopa prevents levodopa metabolism in the periphery",
+                "Carbidopa reduces dyskinesias",
+                "Carbidopa increases levodopa absorption",
+                "Carbidopa blocks COMT enzymes"
+                ],
+                "correct": 1,
+                "explanation": "Carbidopa inhibits aromatic amino acid decarboxylase (AAAD) but cannot cross the blood-brain barrier. This prevents peripheral conversion of levodopa to dopamine, allowing more levodopa to reach the brain."
+            },
+            {
+                "id": 4106,
+                "topic": "Antipsychotics",
+                "difficulty": "Medium",
+                "question": "Which antipsychotic drug requires weekly blood tests due to the risk of agranulocytosis?",
+                "options": [
+                "Haloperidol",
+                "Chlorpromazine",
+                "Clozapine",
+                "Risperidone",
+                "Olanzapine"
+                ],
+                "correct": 2,
+                "explanation": "Clozapine has a significant risk of agranulocytosis, requiring weekly WBC count monitoring. This serious side effect distinguishes it from other antipsychotics."
+            },
+            {
+                "id": 4107,
+                "topic": "Dopaminergic Pathways",
+                "difficulty": "Hard",
+                "question": "A patient taking haloperidol develops galactorrhea and amenorrhea. Which dopaminergic pathway is most likely affected?",
+                "options": [
+                "Nigrostriatal tract",
+                "Mesolimbic-mesocortical tract",
+                "Tuberoinfundibular tract",
+                "Chemoreceptor trigger zone",
+                "Reticulospinal tract"
+                ],
+                "correct": 2,
+                "explanation": "The tuberoinfundibular tract projects from the hypothalamus to the anterior pituitary and releases dopamine to decrease prolactin. Blocking this pathway with antipsychotics causes hyperprolactinemia, leading to galactorrhea and amenorrhea."
+            },
+            {
+                "id": 4108,
+                "topic": "Anticonvulsants",
+                "difficulty": "Easy",
+                "question": "Which anticonvulsant is the drug of choice for absence seizures?",
+                "options": [
+                "Phenytoin",
+                "Carbamazepine",
+                "Ethosuximide",
+                "Lamotrigine",
+                "Gabapentin"
+                ],
+                "correct": 2,
+                "explanation": "Ethosuximide blocks T-type Ca²⁺ channels in thalamic neurons and is specifically effective for absence seizures. It is considered the drug of choice for this seizure type."
+            },
+            {
+                "id": 4109,
+                "topic": "Anticonvulsants",
+                "difficulty": "Hard",
+                "question": "A patient on phenytoin develops gingival hyperplasia, hirsutism, and megaloblastic anemia. Which mechanism explains the anemia?",
+                "options": [
+                "Bone marrow suppression",
+                "Iron deficiency",
+                "Folate deficiency",
+                "B12 deficiency",
+                "Hemolysis"
+                ],
+                "correct": 2,
+                "explanation": "Phenytoin can cause megaloblastic anemia due to folate deficiency. The drug interferes with folate metabolism, leading to impaired DNA synthesis and megaloblastic changes."
+            },
+            {
+                "id": 4110,
+                "topic": "Status Epilepticus",
+                "difficulty": "Medium",
+                "question": "Which drug combination represents first-line treatment for status epilepticus?",
+                "options": [
+                "Phenytoin and carbamazepine",
+                "Lorazepam and phenytoin",
+                "Valproic acid and ethosuximide",
+                "Diazepam and gabapentin",
+                "Lamotrigine and topiramate"
+                ],
+                "correct": 1,
+                "explanation": "Status epilepticus is treated with IV lorazepam or diazepam for immediate seizure control, followed by IV phenytoin or fosphenytoin for longer-term control. This combination addresses both immediate and sustained anticonvulsant needs."
+            },
+            {
+                "id": 4111,
+                "topic": "Drug Interactions",
+                "difficulty": "Hard",
+                "question": "A woman taking oral contraceptives starts carbamazepine for seizures and later becomes pregnant. What is the most likely explanation?",
+                "options": [
+                "Carbamazepine is teratogenic",
+                "Carbamazepine induces cytochrome P450 enzymes",
+                "Carbamazepine blocks hormone receptors",
+                "Carbamazepine causes liver toxicity",
+                "Carbamazepine increases hormone binding proteins"
+                ],
+                "correct": 1,
+                "explanation": "Carbamazepine induces cytochrome P450 enzymes, increasing the metabolism of oral contraceptives and reducing their effectiveness. This can lead to contraceptive failure and unintended pregnancy."
+            },
+            {
+                "id": 4112,
+                "topic": "Buspirone",
+                "difficulty": "Medium",
+                "question": "Which characteristic distinguishes buspirone from benzodiazepines in treating anxiety?",
+                "options": [
+                "Buspirone has immediate anxiolytic effects",
+                "Buspirone works through GABA receptors",
+                "Buspirone is a 5-HT1A partial agonist",
+                "Buspirone causes sedation",
+                "Buspirone has abuse potential"
+                ],
+                "correct": 2,
+                "explanation": "Buspirone is a 5-HT1A partial agonist that does not work through GABA receptors like benzodiazepines. It takes 1-2 weeks for effects, is non-sedative, and has low abuse potential."
+            },
+            {
+                "id": 5101,
+                "topic": "Inhaled Anesthetics",
+                "difficulty": "Medium",
+                "question": "A patient requires rapid induction and recovery from anesthesia for a short outpatient procedure. Which inhaled anesthetic would be most appropriate based on its pharmacokinetic properties?",
+                "options": [
+                "Halothane",
+                "Desflurane",
+                "Isoflurane",
+                "Enflurane",
+                "Methoxyflurane"
+                ],
+                "correct": 1,
+                "explanation": "Desflurane has a low blood-gas ratio (0.5), which means rapid onset and recovery. Low blood-gas ratios are associated with fast onset and recovery times."
+            },
+            {
+                "id": 5102,
+                "topic": "Anesthetic Potency",
+                "difficulty": "Hard",
+                "question": "A 70-year-old patient receiving chronic opioid therapy requires general anesthesia. How would you expect the MAC values to be affected?",
+                "options": [
+                "MAC values would be higher than normal",
+                "MAC values would be lower than normal",
+                "MAC values would remain unchanged",
+                "MAC values would be unpredictable",
+                "MAC values would only change for nitrous oxide"
+                ],
+                "correct": 1,
+                "explanation": "MAC values are lower in the elderly and in the presence of opiates or sedative-hypnotics. This patient has both risk factors for reduced MAC requirements."
+            },
+            {
+                "id": 5103,
+                "topic": "Local Anesthetics",
+                "difficulty": "Medium",
+                "question": "A patient develops an allergic reaction to procaine during a dental procedure. Which local anesthetic would be the safest alternative?",
+                "options": [
+                "Benzocaine",
+                "Cocaine",
+                "Lidocaine",
+                "Chloroprocaine",
+                "Tetracaine"
+                ],
+                "correct": 2,
+                "explanation": "Procaine is an ester local anesthetic metabolized to PABA, which causes allergic reactions. Lidocaine is an amide local anesthetic and would not cross-react with ester allergies."
+            },
+            {
+                "id": 5104,
+                "topic": "Local Anesthetic Mechanism",
+                "difficulty": "Hard",
+                "question": "Which form of local anesthetic is responsible for crossing the axonal membrane, and which form blocks the sodium channel?",
+                "options": [
+                "Ionized crosses membrane; nonionized blocks channel",
+                "Nonionized crosses membrane; ionized blocks channel",
+                "Both forms cross equally; ionized blocks channel",
+                "Nonionized crosses membrane; both forms block channel",
+                "Ionized crosses membrane; both forms block channel"
+                ],
+                "correct": 1,
+                "explanation": "The nonionized (lipophilic) form crosses the axonal membrane, then becomes ionized inside the nerve where the ionized form blocks the inactivated Na+ channel."
+            },
+            {
+                "id": 5105,
+                "topic": "Neuromuscular Blocking Agents",
+                "difficulty": "Medium",
+                "question": "A patient undergoing surgery develops malignant hyperthermia after receiving succinylcholine. What is the appropriate treatment?",
+                "options": [
+                "Flumazenil",
+                "Naloxone",
+                "Dantrolene",
+                "Atropine",
+                "Neostigmine"
+                ],
+                "correct": 2,
+                "explanation": "Dantrolene blocks Ca2+ release from the sarcoplasmic reticulum and is the specific treatment for malignant hyperthermia associated with succinylcholine and inhaled anesthetics."
+            },
+            {
+                "id": 5106,
+                "topic": "Muscle Relaxant Reversal",
+                "difficulty": "Hard",
+                "question": "A patient has received rocuronium for muscle relaxation during surgery. Which agent would be most appropriate to reverse the neuromuscular blockade?",
+                "options": [
+                "Succinylcholine",
+                "Dantrolene",
+                "Neostigmine",
+                "Flumazenil",
+                "Naloxone"
+                ],
+                "correct": 2,
+                "explanation": "Rocuronium is a nondepolarizing (competitive) muscle relaxant that can be reversed with AChE inhibitors like neostigmine, which increases ACh availability to compete with the blocker."
+            },
+            {
+                "id": 5107,
+                "topic": "Opioid Pharmacology",
+                "difficulty": "Medium",
+                "question": "A patient presents with the classic triad of opioid overdose. Which combination of signs would you expect?",
+                "options": [
+                "Mydriasis, respiratory depression, hypertension",
+                "Miosis, respiratory depression, coma",
+                "Miosis, tachycardia, agitation",
+                "Mydriasis, tachypnea, seizures",
+                "Miosis, hyperthermia, muscle rigidity"
+                ],
+                "correct": 1,
+                "explanation": "The classic triad of opioid overdose includes pinpoint pupils (miosis), respiratory depression, and coma. This is treated with IV naloxone."
+            },
+            {
+                "id": 5108,
+                "topic": "Opioid Receptor Selectivity",
+                "difficulty": "Hard",
+                "question": "A chronic pain patient on high-dose morphine is given pentazocine for breakthrough pain but experiences worsening pain and withdrawal symptoms. What explains this phenomenon?",
+                "options": [
+                "Pentazocine is not potent enough",
+                "Pentazocine is a κ-agonist and μ-antagonist causing precipitated withdrawal",
+                "The patient is allergic to pentazocine",
+                "Pentazocine doesn't cross the blood-brain barrier",
+                "The dose of pentazocine was too low"
+                ],
+                "correct": 1,
+                "explanation": "Pentazocine is a mixed agonist-antagonist (κ-agonist, μ-antagonist) that can displace μ-receptor agonists like morphine, causing precipitated withdrawal in dependent patients."
+            },
+            {
+                "id": 5109,
+                "topic": "Opioid Side Effects",
+                "difficulty": "Medium",
+                "question": "A patient on chronic opioid therapy for cancer pain experiences all of the following except:",
+                "options": [
+                "Constipation",
+                "Miosis",
+                "Tolerance to analgesic effects",
+                "Tolerance to constipation",
+                "Physical dependence"
+                ],
+                "correct": 3,
+                "explanation": "Tolerance occurs to most opioid effects including analgesia, but NOT to miosis and constipation. These effects persist throughout chronic therapy."
+            },
+            {
+                "id": 5110,
+                "topic": "Specific Opioids",
+                "difficulty": "Hard",
+                "question": "Which opioid would be most appropriate for a patient in labor, and why?",
+                "options": [
+                "Morphine - crosses placenta easily",
+                "Fentanyl - short duration of action",
+                "Meperidine - doesn't inhibit uterine contractions and causes less neonatal respiratory depression",
+                "Codeine - weak potency reduces risk",
+                "Methadone - long duration prevents withdrawal"
+                ],
+                "correct": 2,
+                "explanation": "Meperidine is specifically mentioned as safe in pregnancy because it doesn't inhibit uterine contractions and causes less respiratory depression in newborns compared to other opioids."
+            },
+            {
+                "id": 5111,
+                "topic": "CNS Stimulants - Cocaine",
+                "difficulty": "Medium",
+                "question": "A patient presents to the ER with mydriasis, tachycardia, hypertension, and paranoid behavior. Urine toxicology is positive for cocaine. Which mechanism explains the cardiovascular effects?",
+                "options": [
+                "Direct cardiac muscle stimulation",
+                "Blockade of sodium channels",
+                "Blockade of dopamine reuptake",
+                "Blockade of norepinephrine reuptake",
+                "Blockade of serotonin reuptake"
+                ],
+                "correct": 3,
+                "explanation": "Cocaine blocks reuptake of norepinephrine, dopamine, and serotonin. The cardiovascular effects (tachycardia, hypertension) are primarily due to increased norepinephrine activity."
+            },
+            {
+                "id": 5112,
+                "topic": "CNS Stimulant Toxicity",
+                "difficulty": "Hard",
+                "question": "A college student is brought to the ER with hyperthermia, seizures, and cardiovascular collapse after taking amphetamines. What is the most life-threatening aspect of this presentation?",
+                "options": [
+                "Seizures can be controlled with benzodiazepines",
+                "Hyperthermia leading to multi-organ failure",
+                "Cardiovascular effects are easily reversible",
+                "Psychotic symptoms require antipsychotics",
+                "Dehydration is the primary concern"
+                ],
+                "correct": 1,
+                "explanation": "The document states that excess stimulant effects can lead to 'convulsion, hyperpyrexia, and death.' Hyperthermia with multi-organ failure is often the cause of death in stimulant overdose."
+            },
+            {
+                "id": 5113,
+                "topic": "CNS Depressant Withdrawal",
+                "difficulty": "Hard",
+                "question": "A chronic alcoholic is admitted for surgery and develops tremors, seizures, and hallucinations 48 hours post-admission. What is the most appropriate immediate treatment?",
+                "options": [
+                "Haloperidol for hallucinations",
+                "Phenytoin for seizures",
+                "Long-acting benzodiazepine like diazepam",
+                "Thiamine supplementation",
+                "Fluid restriction"
+                ],
+                "correct": 2,
+                "explanation": "The patient is experiencing alcohol withdrawal with delirium tremens. Long-acting benzodiazepines like diazepam are the first-line treatment as they cross-substitute for alcohol at GABA receptors and prevent life-threatening seizures."
+            },
+            {
+                "id": 5114,
+                "topic": "Opioid Withdrawal",
+                "difficulty": "Medium",
+                "question": "A patient in opioid withdrawal presents with yawning, lacrimation, muscle cramps, and diarrhea. How does this differ from CNS depressant withdrawal?",
+                "options": [
+                "Opioid withdrawal causes seizures",
+                "Opioid withdrawal is life-threatening",
+                "Opioid withdrawal is not life-threatening",
+                "Both are equally dangerous",
+                "Opioid withdrawal requires mechanical ventilation"
+                ],
+                "correct": 2,
+                "explanation": "The document specifically states that opioid withdrawal causes 'lacrimation, yawning, sweating, and restlessness...muscle cramping, and diarrhea; not life-threatening,' unlike CNS depressant withdrawal which can cause fatal seizures."
+            },
+            {
+                "id": 5115,
+                "topic": "Hallucinogens",
+                "difficulty": "Medium",
+                "question": "A patient presents with nystagmus, paranoia, and rhabdomyolysis after using an unknown substance at a party. Which drug is most likely responsible?",
+                "options": [
+                "LSD",
+                "Marijuana",
+                "MDMA",
+                "PCP",
+                "Psilocybin"
+                ],
+                "correct": 3,
+                "explanation": "PCP is specifically mentioned as causing 'horizontal and vertical nystagmus, paranoia, rhabdomyolysis' and being 'extremely toxic' with common overdoses. The combination of these specific symptoms points to PCP."
+            },
+            {
+                "id": 5101,
+                "topic": "Inhaled Anesthetics",
+                "difficulty": "Medium",
+                "question": "A patient requires rapid induction and recovery from anesthesia for a short outpatient procedure. Which inhaled anesthetic would be most appropriate based on its pharmacokinetic properties?",
+                "options": [
+                "Halothane",
+                "Desflurane",
+                "Isoflurane",
+                "Enflurane",
+                "Methoxyflurane"
+                ],
+                "correct": 1,
+                "explanation": "Desflurane has a low blood-gas ratio (0.5), which means rapid onset and recovery. Low blood-gas ratios are associated with fast onset and recovery times."
+            },
+            {
+                "id": 5102,
+                "topic": "Anesthetic Potency",
+                "difficulty": "Hard",
+                "question": "A 70-year-old patient receiving chronic opioid therapy requires general anesthesia. How would you expect the MAC values to be affected?",
+                "options": [
+                "MAC values would be higher than normal",
+                "MAC values would be lower than normal",
+                "MAC values would remain unchanged",
+                "MAC values would be unpredictable",
+                "MAC values would only change for nitrous oxide"
+                ],
+                "correct": 1,
+                "explanation": "MAC values are lower in the elderly and in the presence of opiates or sedative-hypnotics. This patient has both risk factors for reduced MAC requirements."
+            },
+            {
+                "id": 5103,
+                "topic": "Local Anesthetics",
+                "difficulty": "Medium",
+                "question": "A patient develops an allergic reaction to procaine during a dental procedure. Which local anesthetic would be the safest alternative?",
+                "options": [
+                "Benzocaine",
+                "Cocaine",
+                "Lidocaine",
+                "Chloroprocaine",
+                "Tetracaine"
+                ],
+                "correct": 2,
+                "explanation": "Procaine is an ester local anesthetic metabolized to PABA, which causes allergic reactions. Lidocaine is an amide local anesthetic and would not cross-react with ester allergies."
+            },
+            {
+                "id": 5104,
+                "topic": "Local Anesthetic Mechanism",
+                "difficulty": "Hard",
+                "question": "Which form of local anesthetic is responsible for crossing the axonal membrane, and which form blocks the sodium channel?",
+                "options": [
+                "Ionized crosses membrane; nonionized blocks channel",
+                "Nonionized crosses membrane; ionized blocks channel",
+                "Both forms cross equally; ionized blocks channel",
+                "Nonionized crosses membrane; both forms block channel",
+                "Ionized crosses membrane; both forms block channel"
+                ],
+                "correct": 1,
+                "explanation": "The nonionized (lipophilic) form crosses the axonal membrane, then becomes ionized inside the nerve where the ionized form blocks the inactivated Na+ channel."
+            },
+            {
+                "id": 5105,
+                "topic": "Neuromuscular Blocking Agents",
+                "difficulty": "Medium",
+                "question": "A patient undergoing surgery develops malignant hyperthermia after receiving succinylcholine. What is the appropriate treatment?",
+                "options": [
+                "Flumazenil",
+                "Naloxone",
+                "Dantrolene",
+                "Atropine",
+                "Neostigmine"
+                ],
+                "correct": 2,
+                "explanation": "Dantrolene blocks Ca2+ release from the sarcoplasmic reticulum and is the specific treatment for malignant hyperthermia associated with succinylcholine and inhaled anesthetics."
+            },
+            {
+                "id": 5106,
+                "topic": "Muscle Relaxant Reversal",
+                "difficulty": "Hard",
+                "question": "A patient has received rocuronium for muscle relaxation during surgery. Which agent would be most appropriate to reverse the neuromuscular blockade?",
+                "options": [
+                "Succinylcholine",
+                "Dantrolene",
+                "Neostigmine",
+                "Flumazenil",
+                "Naloxone"
+                ],
+                "correct": 2,
+                "explanation": "Rocuronium is a nondepolarizing (competitive) muscle relaxant that can be reversed with AChE inhibitors like neostigmine, which increases ACh availability to compete with the blocker."
+            },
+            {
+                "id": 5107,
+                "topic": "Opioid Pharmacology",
+                "difficulty": "Medium",
+                "question": "A patient presents with the classic triad of opioid overdose. Which combination of signs would you expect?",
+                "options": [
+                "Mydriasis, respiratory depression, hypertension",
+                "Miosis, respiratory depression, coma",
+                "Miosis, tachycardia, agitation",
+                "Mydriasis, tachypnea, seizures",
+                "Miosis, hyperthermia, muscle rigidity"
+                ],
+                "correct": 1,
+                "explanation": "The classic triad of opioid overdose includes pinpoint pupils (miosis), respiratory depression, and coma. This is treated with IV naloxone."
+            },
+            {
+                "id": 5108,
+                "topic": "Opioid Receptor Selectivity",
+                "difficulty": "Hard",
+                "question": "A chronic pain patient on high-dose morphine is given pentazocine for breakthrough pain but experiences worsening pain and withdrawal symptoms. What explains this phenomenon?",
+                "options": [
+                "Pentazocine is not potent enough",
+                "Pentazocine is a κ-agonist and μ-antagonist causing precipitated withdrawal",
+                "The patient is allergic to pentazocine",
+                "Pentazocine doesn't cross the blood-brain barrier",
+                "The dose of pentazocine was too low"
+                ],
+                "correct": 1,
+                "explanation": "Pentazocine is a mixed agonist-antagonist (κ-agonist, μ-antagonist) that can displace μ-receptor agonists like morphine, causing precipitated withdrawal in dependent patients."
+            },
+            {
+                "id": 5109,
+                "topic": "Opioid Side Effects",
+                "difficulty": "Medium",
+                "question": "A patient on chronic opioid therapy for cancer pain experiences all of the following except:",
+                "options": [
+                "Constipation",
+                "Miosis",
+                "Tolerance to analgesic effects",
+                "Tolerance to constipation",
+                "Physical dependence"
+                ],
+                "correct": 3,
+                "explanation": "Tolerance occurs to most opioid effects including analgesia, but NOT to miosis and constipation. These effects persist throughout chronic therapy."
+            },
+            {
+                "id": 5110,
+                "topic": "Specific Opioids",
+                "difficulty": "Hard",
+                "question": "Which opioid would be most appropriate for a patient in labor, and why?",
+                "options": [
+                "Morphine - crosses placenta easily",
+                "Fentanyl - short duration of action",
+                "Meperidine - doesn't inhibit uterine contractions and causes less neonatal respiratory depression",
+                "Codeine - weak potency reduces risk",
+                "Methadone - long duration prevents withdrawal"
+                ],
+                "correct": 2,
+                "explanation": "Meperidine is specifically mentioned as safe in pregnancy because it doesn't inhibit uterine contractions and causes less respiratory depression in newborns compared to other opioids."
+            },
+            {
+                "id": 5111,
+                "topic": "CNS Stimulants - Cocaine",
+                "difficulty": "Medium",
+                "question": "A patient presents to the ER with mydriasis, tachycardia, hypertension, and paranoid behavior. Urine toxicology is positive for cocaine. Which mechanism explains the cardiovascular effects?",
+                "options": [
+                "Direct cardiac muscle stimulation",
+                "Blockade of sodium channels",
+                "Blockade of dopamine reuptake",
+                "Blockade of norepinephrine reuptake",
+                "Blockade of serotonin reuptake"
+                ],
+                "correct": 3,
+                "explanation": "Cocaine blocks reuptake of norepinephrine, dopamine, and serotonin. The cardiovascular effects (tachycardia, hypertension) are primarily due to increased norepinephrine activity."
+            },
+            {
+                "id": 5112,
+                "topic": "CNS Stimulant Toxicity",
+                "difficulty": "Hard",
+                "question": "A college student is brought to the ER with hyperthermia, seizures, and cardiovascular collapse after taking amphetamines. What is the most life-threatening aspect of this presentation?",
+                "options": [
+                "Seizures can be controlled with benzodiazepines",
+                "Hyperthermia leading to multi-organ failure",
+                "Cardiovascular effects are easily reversible",
+                "Psychotic symptoms require antipsychotics",
+                "Dehydration is the primary concern"
+                ],
+                "correct": 1,
+                "explanation": "The document states that excess stimulant effects can lead to 'convulsion, hyperpyrexia, and death.' Hyperthermia with multi-organ failure is often the cause of death in stimulant overdose."
+            },
+            {
+                "id": 5113,
+                "topic": "CNS Depressant Withdrawal",
+                "difficulty": "Hard",
+                "question": "A chronic alcoholic is admitted for surgery and develops tremors, seizures, and hallucinations 48 hours post-admission. What is the most appropriate immediate treatment?",
+                "options": [
+                "Haloperidol for hallucinations",
+                "Phenytoin for seizures",
+                "Long-acting benzodiazepine like diazepam",
+                "Thiamine supplementation",
+                "Fluid restriction"
+                ],
+                "correct": 2,
+                "explanation": "The patient is experiencing alcohol withdrawal with delirium tremens. Long-acting benzodiazepines like diazepam are the first-line treatment as they cross-substitute for alcohol at GABA receptors and prevent life-threatening seizures."
+            },
+            {
+                "id": 5114,
+                "topic": "Opioid Withdrawal",
+                "difficulty": "Medium",
+                "question": "A patient in opioid withdrawal presents with yawning, lacrimation, muscle cramps, and diarrhea. How does this differ from CNS depressant withdrawal?",
+                "options": [
+                "Opioid withdrawal causes seizures",
+                "Opioid withdrawal is life-threatening",
+                "Opioid withdrawal is not life-threatening",
+                "Both are equally dangerous",
+                "Opioid withdrawal requires mechanical ventilation"
+                ],
+                "correct": 2,
+                "explanation": "The document specifically states that opioid withdrawal causes 'lacrimation, yawning, sweating, and restlessness...muscle cramping, and diarrhea; not life-threatening,' unlike CNS depressant withdrawal which can cause fatal seizures."
+            },
+            {
+                "id": 5115,
+                "topic": "Hallucinogens",
+                "difficulty": "Medium",
+                "question": "A patient presents with nystagmus, paranoia, and rhabdomyolysis after using an unknown substance at a party. Which drug is most likely responsible?",
+                "options": [
+                "LSD",
+                "Marijuana",
+                "MDMA",
+                "PCP",
+                "Psilocybin"
+                ],
+                "correct": 3,
+                "explanation": "PCP is specifically mentioned as causing 'horizontal and vertical nystagmus, paranoia, rhabdomyolysis' and being 'extremely toxic' with common overdoses. The combination of these specific symptoms points to PCP."
             }
-        }, [score, bestScore]);
+        ];
 
-        const levels = gameData;
-        const currentLevelData = levels[currentLevel];
-        const currentQ = currentLevelData?.questions[currentQuestion];
-        const totalQuestions = currentLevelData?.questions.length || 0;
-
-        const handleAnswerSelect = (index) => {
-            if (showExplanation) return;
-            setSelectedAnswer(index);
-        };
-
-        const handleSubmitAnswer = () => {
-            if (selectedAnswer === null) return;
-            setShowExplanation(true);
-            const isCorrect = selectedAnswer === currentQ.correct;
-            
-            if (isCorrect) {
-                const basePoints = 10;
-                const streakBonus = streak >= 2 ? 5 : 0;
-                setScore(score + basePoints + streakBonus);
-                setStreak(streak + 1);
-            } else {
-                setStreak(0);
+        const topics = [
+            {
+                arch: "All",
+                topics: [
+                    "Pharmacokinetics",
+                    "Pharmacodynamics",
+                    "Drug Metabolism",
+                    "Cholinergic Pharmacology",
+                    "Adrenergic Pharmacology",
+                    "Autonomic Pharmacology",
+                    "Sedative-Hypnotic-Anxiolytic Drugs",
+                    "Antidepressants",
+                    "Bipolar Disorder",
+                    "Parkinson Disease",
+                    "Antipsychotics",
+                    "Dopaminergic Pathways",
+                    "Anticonvulsants",
+                    "Status Epilepticus",
+                    "Drug Interactions",
+                    "Buspirone",
+                    "Inhaled Anesthetics",
+                    "Anesthetic Potency",
+                    "Local Anesthetics",
+                    "Local Anesthetic Mechanism",
+                    "Neuromuscular Blocking Agents",
+                    "Muscle Relaxant Reversal",
+                    "Opioid Pharmacology",
+                    "Opioid Receptor Selectivity",
+                    "Opioid Side Effects",
+                    "Specific Opioids",
+                    "CNS Stimulants - Cocaine",
+                    "CNS Stimulant Toxicity",
+                    "CNS Depressant Withdrawal",
+                    "Opioid Withdrawal",
+                    "Hallucinogens"
+                ]
+            },
+            {
+                arch: "Pharmacology",
+                topics: [
+                    "Pharmacokinetics",
+                    "Pharmacodynamics",
+                    "Drug Metabolism"
+                ]
+            },
+            {
+                arch: "Autonomic Nervous System",
+                topics: [
+                    "Cholinergic Pharmacology",
+                    "Adrenergic Pharmacology",
+                    "Autonomic Pharmacology"
+                ]
+            },
+            {
+                arch: "CNS Drugs",
+                topics: [
+                    "Sedative-Hypnotic-Anxiolytic Drugs",
+                    "Antidepressants",
+                    "Bipolar Disorder",
+                    "Parkinson Disease",
+                    "Antipsychotics",
+                    "Dopaminergic Pathways",
+                    "Anticonvulsants",
+                    "Status Epilepticus",
+                    "Drug Interactions",
+                    "Buspirone"
+                ]
+            },
+            {
+                arch: "Anesthetics & Analgesics",
+                topics: [
+                    "Inhaled Anesthetics",
+                    "Anesthetic Potency",
+                    "Local Anesthetics",
+                    "Local Anesthetic Mechanism",
+                    "Neuromuscular Blocking Agents",
+                    "Muscle Relaxant Reversal",
+                    "Opioid Pharmacology",
+                    "Opioid Receptor Selectivity",
+                    "Opioid Side Effects",
+                    "Specific Opioids"
+                ]
+            },
+            {
+                arch: "Other CNS Agents",
+                topics: [
+                    "CNS Stimulants - Cocaine",
+                    "CNS Stimulant Toxicity",
+                    "CNS Depressant Withdrawal",
+                    "Opioid Withdrawal",
+                    "Hallucinogens"
+                ]
             }
-        };
+        ];
+        const difficulties = ["All", "Easy", "Medium", "Hard"];
 
-        const handleNextQuestion = () => {
-            if (currentQuestion < totalQuestions - 1) {
-                setCurrentQuestion(currentQuestion + 1);
-                setSelectedAnswer(null);
-                setShowExplanation(false);
-            } else if (currentLevel < 3) {
-                setCurrentLevel(currentLevel + 1);
+        function USMLEQuiz() {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [score, setScore] = useState(0);
+            const [answeredQuestions, setAnsweredQuestions] = useState([]);
+            const [selectedTopic, setSelectedTopic] = useState("All");
+            const [selectedDifficulty, setSelectedDifficulty] = useState("All");
+            const [quizStarted, setQuizStarted] = useState(false);
+            const [filteredQuestions, setFilteredQuestions] = useState(questionBank);
+            const [questionOrder, setQuestionOrder] = useState([]);
+
+            useEffect(() => {
+                let filtered = questionBank;
+
+                if (selectedTopic !== "All") {
+                    const topicObj = topics.find(t => t.arch === selectedTopic);
+                    if (topicObj) {
+                        filtered = filtered.filter(q => topicObj.topics.includes(q.topic));
+                    }
+                }
+
+                if (selectedDifficulty !== "All") {
+                    filtered = filtered.filter(q => q.difficulty === selectedDifficulty);
+                }
+
+                setFilteredQuestions(filtered);
+
+                // Create randomized question order
+                const indices = Array.from({ length: filtered.length }, (_, i) => i);
+                setQuestionOrder(indices.sort(() => Math.random() - 0.5));
+
                 setCurrentQuestion(0);
                 setSelectedAnswer(null);
                 setShowExplanation(false);
-            } else {
-                setGamePhase('complete');
+                setScore(0);
+                setAnsweredQuestions([]);
+            }, [selectedTopic, selectedDifficulty]);
+
+            const handleAnswerSelect = (answerIndex) => {
+                if (showExplanation) return;
+                setSelectedAnswer(answerIndex);
+            };
+
+            const handleSubmitAnswer = () => {
+                if (selectedAnswer === null) return;
+
+                const questionIndex = questionOrder[currentQuestion];
+                const question = filteredQuestions[questionIndex];
+                const isCorrect = selectedAnswer === question.correct;
+
+                if (isCorrect) {
+                    setScore(score + 1);
+                }
+
+                if (!answeredQuestions.some(ans => ans.questionId === question.id)) {
+                    setAnsweredQuestions([...answeredQuestions, {
+                        questionId: question.id,
+                        selectedAnswer,
+                        correct: question.correct,
+                        isCorrect
+                    }]);
+                }
+
+                setShowExplanation(true);
+            };
+
+            const handleNextQuestion = () => {
+                if (currentQuestion < questionOrder.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    setCurrentQuestion(questionOrder.length);
+                }
+
+                // Check if already answered
+                const nextQuestionIndex = questionOrder[currentQuestion + 1];
+                const nextQuestion = filteredQuestions[nextQuestionIndex];
+                const alreadyAnswered = answeredQuestions.some(ans => ans.questionId === nextQuestion.id);
+
+                setSelectedAnswer(null);
+                setShowExplanation(alreadyAnswered);
+            };
+
+            const handlePreviousQuestion = () => {
+                if (currentQuestion > 0) {
+                    setCurrentQuestion(currentQuestion - 1);
+                } else {
+                    setCurrentQuestion(0);
+                }
+                // Check if already answered
+                const previousQuestionIndex = questionOrder[currentQuestion - 1];
+                const previousQuestion = filteredQuestions[previousQuestionIndex];
+                const alreadyAnswered = answeredQuestions.some(ans => ans.questionId === previousQuestion.id);
+
+                setSelectedAnswer(null);
+                setShowExplanation(alreadyAnswered);
+            };
+
+            const handleRestartQuiz = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setScore(0);
+                setAnsweredQuestions([]);
+                setQuizStarted(false);
+
+                // Regenerate random order
+                const indices = Array.from({ length: filteredQuestions.length }, (_, i) => i);
+                setQuestionOrder(indices.sort(() => Math.random() - 0.5));
+            };
+
+            const startQuiz = () => {
+                setQuizStarted(true);
+            };
+
+            if (quizStarted && filteredQuestions.length === 0) {
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>USMLE Quiz</h1>
+                        </div>
+                        <div className="quiz-container">
+                            <div style={{ textAlign: 'center', padding: '40px' }}>
+                                <h3>No questions available for the selected criteria.</h3>
+                                <p>Please select different topic or difficulty filters.</p>
+                                <br/>
+                                <button className="btn btn-primary" onClick={handleRestartQuiz}>
+                                    Take Another Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
             }
-        };
 
-        const resetGame = () => {
-            setCurrentLevel(1);
-            setCurrentQuestion(0);
-            setScore(0);
-            setSelectedAnswer(null);
-            setShowExplanation(false);
-            setStreak(0);
-            setGamePhase('menu');
-        };
-
-        if (gamePhase === 'menu') {
-            return (
-                <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-                    <div className="max-w-6xl mx-auto p-6">
-                        <div className="text-center mb-12 fade-in">
-                            <h1 className="text-6xl font-bold text-blue-600 mb-4">USMLE Master</h1>
-                            <p className="text-xl text-gray-600 mb-2">Interactive Medical Learning Game</p>
-                            {bestScore > 0 && <p className="text-lg text-blue-600 font-semibold">🏆 Best Score: {bestScore} points</p>}
+            if (!quizStarted) {
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>USMLE Quiz</h1>
                         </div>
-                        
-                        <div className="grid md:grid-cols-3 gap-8 mb-12">
-                            {Object.entries(levels).map(([levelNum, level]) => (
-                                <div key={levelNum} className={`${level.color} text-white rounded-2xl p-8 shadow-2xl fade-in`}>
-                                    <h3 className="text-2xl font-bold mb-4 text-center">{level.name}</h3>
-                                    <div className="text-center">
-                                        <span className="text-lg">{level.questions.length} Questions</span>
-                                        <div className="text-sm mt-2">{level.questions.length * 10} Total Points</div>
-                                    </div>
+
+                        <div className="quiz-container">
+                            <h2 style={{ marginBottom: '20px', color: '#2c3e50' }}>Customize Your Quiz</h2>
+
+                            <div style={{ marginBottom: '25px' }}>
+                                <h4 style={{ marginBottom: '10px', color: '#34495e' }}>Select Topic:</h4>
+                                <div className="topic-selector">
+                                    {topics.map(topic => (
+                                        <button
+                                            key={topic.arch}
+                                            className={`topic-btn ${selectedTopic === topic.arch ? 'active' : ''}`}
+                                            onClick={() => setSelectedTopic(topic.arch)}
+                                        >
+                                            {topic.arch}
+                                        </button>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                        
-                        <div className="text-center">
-                            <button onClick={() => setGamePhase('playing')} className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 rounded-2xl text-2xl font-bold transition-all duration-300 hover:scale-105 pulse-glow shadow-2xl">
-                                🚀 Start Learning Journey
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        if (gamePhase === 'complete') {
-            const totalPossible = Object.values(levels).reduce((sum, level) => sum + level.questions.length * 10, 0);
-            const percentage = Math.round((score / totalPossible) * 100);
-            const performance = percentage >= 80 ? "🏆 Outstanding!" : percentage >= 70 ? "🎯 Great job!" : percentage >= 60 ? "📚 Good progress!" : "💪 Keep practicing!";
-
-            return (
-                <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-                    <div className="max-w-4xl mx-auto p-6">
-                        <div className="text-center fade-in">
-                            <h1 className="text-5xl font-bold text-gray-800 mb-4">🎓 Congratulations!</h1>
-                            <p className="text-2xl text-gray-600 mb-12">You've completed all USMLE levels!</p>
-                            
-                            <div className="bg-white rounded-3xl shadow-2xl p-10 mb-12 max-w-lg mx-auto">
-                                <h3 className="text-3xl font-bold text-gray-800 mb-6">Final Results</h3>
-                                <div className="text-5xl font-bold text-blue-600 mb-2">{score}</div>
-                                <div className="text-gray-600 mb-6">out of {totalPossible} points ({percentage}%)</div>
-                                {score === bestScore && score > 0 && <div className="text-2xl text-yellow-600 font-bold mb-4">🎉 New Best Score!</div>}
-                                <div className="text-2xl font-bold text-gray-700">{performance}</div>
                             </div>
-                            
-                            <div className="space-x-4">
-                                <button onClick={resetGame} className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-xl text-xl font-bold transition-all duration-300 hover:scale-105 shadow-xl">
-                                    🎮 Play Again
-                                </button>
-                                <button onClick={() => setGamePhase('menu')} className="bg-gray-600 hover:bg-gray-700 text-white px-10 py-4 rounded-xl text-xl font-bold transition-all duration-300 hover:scale-105 shadow-xl">
-                                    📚 Main Menu
+
+                            <div style={{ marginBottom: '30px' }}>
+                                <h4 style={{ marginBottom: '10px', color: '#34495e' }}>Select Difficulty:</h4>
+                                <div className="topic-selector">
+                                    {difficulties.map(difficulty => (
+                                        <button
+                                            key={difficulty}
+                                            className={`topic-btn ${selectedDifficulty === difficulty ? 'active' : ''}`}
+                                            onClick={() => setSelectedDifficulty(difficulty)}
+                                        >
+                                            {difficulty}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: 'center' }}>
+                                <p style={{ marginBottom: '20px', fontSize: '1.1rem', color: '#7f8c8d' }}>
+                                    {filteredQuestions.length} questions available
+                                </p>
+                                <button className="btn btn-primary" onClick={startQuiz}>
+                                    Start Quiz
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            );
-        }
+                );
+            }
 
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-                <div className="max-w-4xl mx-auto p-6">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-8 fade-in">
-                        <div>
-                            <h2 className="text-2xl font-bold text-gray-800">{currentLevelData.name}</h2>
-                            <p className="text-gray-600">Question {currentQuestion + 1} of {totalQuestions}</p>
+            const questionIndex = questionOrder[currentQuestion];
+            const question = filteredQuestions[questionIndex];
+            const progress = ((currentQuestion + 1) / questionOrder.length) * 100;
+
+            if (currentQuestion >= questionOrder.length) {
+                const percentage = Math.round((score / questionOrder.length) * 100);
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>Quiz Complete!</h1>
+                            <p>Your USMLE Pharmacology Results</p>
                         </div>
-                        <div className="flex items-center space-x-8">
-                            <div className="text-center">
-                                <div className="text-3xl font-bold text-blue-600">{score}</div>
-                                <div className="text-sm text-gray-600">Score</div>
-                            </div>
-                            {streak > 0 && (
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-orange-500">{streak}🔥</div>
-                                    <div className="text-sm text-gray-600">Streak</div>
+
+                        <div className="quiz-container">
+                            <div className="stats">
+                                <div className="stat-card">
+                                    <div className="stat-value">{score}</div>
+                                    <div className="stat-label">Correct Answers</div>
                                 </div>
-                            )}
-                        </div>
-                    </div>
+                                <div className="stat-card">
+                                    <div className="stat-value">{questionOrder.length}</div>
+                                    <div className="stat-label">Total Questions</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-value">{percentage}%</div>
+                                    <div className="stat-label">Score</div>
+                                </div>
+                            </div>
 
-                    {/* Progress Bar */}
-                    <div className="mb-10 fade-in">
-                        <div className="flex justify-between text-sm text-gray-600 mb-3">
-                            <span className="font-semibold">Progress</span>
-                            <span className="font-semibold">{Math.round(((currentQuestion + 1) / totalQuestions) * 100)}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-4">
-                            <div className={`h-4 rounded-full ${currentLevelData.color} transition-all duration-500`} 
-                                 style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%` }}></div>
-                        </div>
-                    </div>
-
-                    {/* Question Card */}
-                    <div className="bg-white rounded-3xl shadow-2xl p-10 mb-8 fade-in">
-                        <div className="mb-6">
-                            <span className={`${currentLevelData.color} text-white px-4 py-2 rounded-full text-sm font-bold`}>
-                                {currentQ?.topic}
-                            </span>
-                        </div>
-                        
-                        <h3 className="text-2xl font-semibold text-gray-800 mb-8 leading-relaxed">
-                            {currentQ?.question}
-                        </h3>
-
-                        <div className="space-y-4 mb-8">
-                            {currentQ?.options.map((option, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleAnswerSelect(index)}
-                                    disabled={showExplanation}
-                                    className={`w-full text-left p-6 rounded-2xl border-3 transition-all duration-300 ${
-                                        selectedAnswer === index
-                                            ? showExplanation
-                                                ? index === currentQ.correct
-                                                    ? 'border-green-500 bg-green-50'
-                                                    : 'border-red-500 bg-red-50'
-                                                : 'border-blue-500 bg-blue-50'
-                                            : showExplanation && index === currentQ.correct
-                                                ? 'border-green-500 bg-green-50'
-                                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                    }`}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center">
-                                            <span className="text-xl font-bold text-gray-600 mr-4 bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center">
-                                                {String.fromCharCode(65 + index)}
-                                            </span>
-                                            <span className="text-gray-800 text-lg">{option}</span>
-                                        </div>
-                                        {showExplanation && (
-                                            <div className="ml-4">
-                                                {index === currentQ.correct ? (
-                                                    <span className="text-green-500 text-2xl">✓</span>
-                                                ) : selectedAnswer === index ? (
-                                                    <span className="text-red-500 text-2xl">✗</span>
-                                                ) : null}
+                            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                                <h2 style={{ color: '#34495e', marginBottom: '10px' }}>Review Your Answers</h2>
+                                <h3 style={{ color: percentage >= 70 ? '#27ae60' : '#e74c3c', marginBottom: '20px' }}>
+                                    {percentage >= 90 ? 'Excellent! Ready for USMLE!' :
+                                        percentage >= 70 ? 'Good job! Keep practicing!' :
+                                            'Keep studying! You can do better!'}
+                                </h3>
+                                <div style={{
+                                    maxHeight: '400px',
+                                    overflowY: 'auto',
+                                    textAlign: 'left',
+                                    margin: '0 auto',
+                                    background: '#f5f7fa',
+                                    borderRadius: '15px',
+                                    padding: '20px',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                                    marginBottom: '25px'
+                                }}>
+                                    {answeredQuestions.map((ans, idx) => {
+                                        const q = filteredQuestions.find(q => q.id === ans.questionId);
+                                        return (
+                                            <div key={idx} style={{
+                                                marginBottom: '25px',
+                                                borderBottom: '1px solid #e0e6ed',
+                                                paddingBottom: '15px'
+                                            }}>
+                                                <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>
+                                                    Question {idx + 1}: {q.topic} ({q.difficulty})
+                                                </div>
+                                                <div style={{ marginBottom: '10px', color: '#2c3e50' }}>{q.question}</div>
+                                                <div>
+                                                    <span style={{
+                                                        fontWeight: 'bold',
+                                                        color: ans.isCorrect ? '#27ae60' : '#e74c3c'
+                                                    }}>
+                                                        Your answer: {q.options[ans.selectedAnswer] || <em>None</em>}
+                                                    </span>
+                                                    {ans.isCorrect ? (
+                                                        <span style={{ marginLeft: '10px', color: '#27ae60' }}>✔ Correct</span>
+                                                    ) : (
+                                                        <span style={{ marginLeft: '10px', color: '#e74c3c' }}>✘ Incorrect</span>
+                                                    )}
+                                                </div>
+                                                {!ans.isCorrect && (
+                                                    <div style={{ marginTop: '5px', color: '#34495e' }}>
+                                                        <strong>Correct answer:</strong> {q.options[q.correct]}
+                                                    </div>
+                                                )}
+                                                <div style={{
+                                                    background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                                                    borderRadius: '8px',
+                                                    padding: '12px',
+                                                    marginTop: '10px',
+                                                    fontSize: '0.98rem'
+                                                }}>
+                                                    <strong>Explanation:</strong> {q.explanation}
+                                                </div>
                                             </div>
-                                        )}
-                                    </div>
+                                        );
+                                    })}
+                                </div>
+                                <button className="btn btn-primary" onClick={handleRestartQuiz}>
+                                    Take Another Quiz
                                 </button>
-                            ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>USMLE Pharmacology Quiz</h1>
+                        <p>Question {currentQuestion + 1} of {questionOrder.length}</p>
+                    </div>
+
+                    <div className="quiz-container">
+                        <div className="progress-bar">
+                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                        </div>
+
+                        <div className="stats">
+                            <div className="stat-card">
+                                <div className="stat-value">{score}</div>
+                                <div className="stat-label">Correct</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-value">{question.topic}</div>
+                                <div className="stat-label">Topic</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-value">{question.difficulty}</div>
+                                <div className="stat-label">Difficulty</div>
+                            </div>
+                        </div>
+
+                        <div className="question-card">
+                            <div className="question-number">Question {currentQuestion + 1}</div>
+                            <div className="question-text">{question.question}</div>
+
+                            <div className="options">
+                                {question.options.map((option, index) => (
+                                    <div
+                                        key={index}
+                                        className={`option ${selectedAnswer === index
+                                                ? "selected"
+                                                : ""
+                                            } ${showExplanation && index === question.correct ? "correct" : ""} ${showExplanation &&
+                                                selectedAnswer === index &&
+                                                selectedAnswer !== question.correct
+                                                ? "incorrect"
+                                                : ""
+                                            }`}
+                                        onClick={() => handleAnswerSelect(index)}
+                                    >
+                                        {option}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {showExplanation && (
-                            <div className="mt-8 p-6 bg-blue-50 rounded-2xl border-l-4 border-blue-500">
-                                <h4 className="font-bold text-blue-800 mb-3 text-lg">💡 Explanation</h4>
-                                <p className="text-blue-700">{currentQ?.explanation}</p>
+                            <div className="explanation">
+                                <h4>Explanation:</h4>
+                                <p>{question.explanation}</p>
                             </div>
                         )}
 
-                        <div className="flex justify-between items-center mt-10">
-                            <button onClick={resetGame} className="flex items-center text-gray-600 hover:text-gray-800 px-4 py-2 rounded-xl hover:bg-gray-100">
-                                ↻ Restart
-                            </button>
-                            
-                            {!showExplanation ? (
-                                <button
-                                    onClick={handleSubmitAnswer}
-                                    disabled={selectedAnswer === null}
-                                    className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
-                                        selectedAnswer !== null
-                                            ? 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-105'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    }`}
-                                >
-                                    Submit Answer
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={handleNextQuestion}
-                                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 flex items-center"
-                                >
-                                    {currentQuestion < totalQuestions - 1 ? 'Next Question' : 
-                                     currentLevel < 3 ? 'Next Level' : 'Complete Game'} →
-                                </button>
-                            )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <div>
+                                {currentQuestion > 0 && (
+                                    <button className="btn btn-secondary" onClick={handlePreviousQuestion}>
+                                        Previous Question
+                                    </button>
+                                )}
+                            </div>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                {!showExplanation && (
+                                    <button className="btn btn-primary" onClick={handleSubmitAnswer}>
+                                        Submit Answer
+                                    </button>
+                                )}
+                                {showExplanation && (
+                                    currentQuestion < questionOrder.length - 1 ? (
+                                        <button className="btn btn-secondary" onClick={handleNextQuestion}>
+                                            Next Question
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-primary" onClick={() => setCurrentQuestion(questionOrder.length)}>
+                                            View Results
+                                        </button>
+                                    )
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        );
-    };
+            );
+        }
 
-    // Mount the app
-    const container = document.getElementById('root');
-    const root = ReactDOM.createRoot(container);
-    root.render(<USMLEGame />);
-</script>
-
-
+        ReactDOM.render(<USMLEQuiz />, document.getElementById('root'));
+    </script>
 </body>
+
 </html>

@@ -16,15 +16,15 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -36,241 +36,520 @@
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
         }
 
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
         .quiz-container {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
+        /* Improved Button Styles */
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 25px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(45deg, #f093fb, #f5576c);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
-        }
-
-        .topic-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .topic-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .topic-btn.topic-enabled {
-            background: rgba(234, 102, 205, 0.1);
-            color: #667eea;
-            border-color: #667eea;
-        }
-        .topic-btn.topic-enabled:hover {
-            background: rgba(102, 126, 234, 0.2);
-        }
-        .topic-btn.active,
-        .topic-btn:hover {
-            background:  #667eea !important;
-            color: white;
-        }
-        .question-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
-        }
-
-        .question-number {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            line-height: 1.7;
-            color: #2c3e50;
-        }
-
-        .question-image {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option {
-            padding: 15px 20px;
-            border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: none;
+            letter-spacing: 0.3px;
             position: relative;
             overflow: hidden;
+            min-width: 120px;
         }
 
-        .option::before {
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
         }
 
-        .option:hover::before {
+        .btn:hover::before {
             left: 100%;
         }
 
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Improved Filter Section */
+        .filter-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 2px;
+        }
+
+        /* Better Topic Selector */
+        .topic-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .topic-btn {
+            padding: 10px 18px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .topic-btn:hover {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        }
+
+        .topic-btn.topic-enabled {
+            background: #f0f9ff;
+            border-color: #0ea5e9;
+            color: #0284c7;
+        }
+
+        .topic-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Collapsible Subtopics */
+        .subtopics-container {
+            margin-top: 12px;
+            padding-left: 16px;
+            border-left: 3px solid #e2e8f0;
+            background: #fafbfc;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .subtopics-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Enhanced Question Card */
+        .question-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            margin-bottom: 24px;
+            line-height: 1.8;
+            color: #1e293b;
+            font-weight: 400;
+        }
+
+        .question-image {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Better Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 18px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            position: relative;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
         .option:hover {
-            border-color: #667eea;
-            transform: translateX(5px);
+            border-color: #4f46e5;
+            transform: translateX(4px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.15);
         }
 
         .option.selected {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+            border-color: #4f46e5;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
         }
 
         .option.correct {
-            border-color: #27ae60;
-            background: rgba(39, 174, 96, 0.1);
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
         }
 
         .option.incorrect {
-            border-color: #e74c3c;
-            background: rgba(231, 76, 60, 0.1);
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
         }
 
+        .option.correct::after {
+            content: '✓';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .option.incorrect::after {
+            content: '✗';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Enhanced Explanation */
         .explanation {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            border-left: 4px solid #27ae60;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            border-left: 4px solid #10b981;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
         }
 
         .explanation h4 {
-            color: #27ae60;
-            margin-bottom: 10px;
+            color: #059669;
+            margin-bottom: 12px;
             font-size: 1.1rem;
+            font-weight: 600;
         }
 
+        .explanation p {
+            color: #065f46;
+            line-height: 1.7;
+        }
+
+        /* Improved Stats */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 24px;
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #667eea;
-            align-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
         }
 
         .stat-value {
-            width: 100%;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4f46e5;
+            margin-bottom: 4px;
         }
 
         .stat-label {
-            color: #7f8c8d;
-            margin-top: 5px;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* Better Progress Bar */
+        .progress-container {
+            margin: 24px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
         }
 
         .progress-bar {
             width: 100%;
-            height: 8px;
-            background: #ecf0f1;
-            border-radius: 4px;
+            height: 10px;
+            background: #f1f5f9;
+            border-radius: 8px;
             overflow: hidden;
-            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            position: relative;
         }
 
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Better Controls */
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .question-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Quiz Summary Improvements */
+        .quiz-summary {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-item.correct {
+            border-left-color: #10b981;
+        }
+
+        .summary-item.incorrect {
+            border-left-color: #ef4444;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .summary-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .summary-status.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .summary-status.incorrect {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .no-questions-message {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .no-questions-message h3 {
+            color: #475569;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+
+        .no-questions-message p {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 1.1rem;
+        }
+
+        /* Accessibility and ESL Improvements */
+        .accessibility-note {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .difficulty-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .difficulty-easy { background: #dcfce7; color: #166534; }
+        .difficulty-medium { background: #fef3c7; color: #92400e; }
+        .difficulty-hard { background: #fee2e2; color: #dc2626; }
+        .difficulty-real { background: #e0e7ff; color: #3730a3; }
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -278,16 +557,30 @@
         }
 
         .question-card {
-            animation: fadeInUp 0.6s ease;
+            animation: fadeInUp 0.5s ease-out;
         }
 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .btn:disabled {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 15px;
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+
+            .quiz-container {
+                padding: 24px;
             }
 
             .controls {
@@ -295,8 +588,45 @@
                 align-items: stretch;
             }
 
+            .question-actions {
+                flex-direction: column;
+            }
+
+            .action-group {
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-selector {
+                justify-content: center;
+            }
+
             .btn {
-                margin-bottom: 10px;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .btn:focus,
+        .option:focus,
+        .topic-btn:focus {
+            outline: 3px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .btn-primary {
+                background: #000;
+                border: 2px solid #fff;
+            }
+            
+            .option {
+                border-width: 3px;
             }
         }
     </style>
@@ -307,6 +637,7 @@
 
     <script type="text/babel">
         const { useState, useEffect, useCallback } = React;
+
 
         const questionBank = [
             {
@@ -15611,184 +15942,812 @@
 
         const topics = [
             {
-                "arch": "All",
-                "topics": [
-                    "Anatomy and Embryology",
-                    "Biochemistry and Genetics",
-                    "Physiology",
-                    "Neuroanatomy",
-                    "Histology",
-                    "Immunology",
-                    "Microbiology",
-                    "Pathology and Pathophysiology",
-                    "Pharmacology",
-                    "ECG (Electrocardiography)",
-                    "Radiology",
-                    "Internal Medicine",
-                    "Surgery",
-                    "Obstetrics and Gynecology (ObGyn)",
-                    "Pediatrics",
-                    "Psychiatry",
-                    "Critical Care, Intensive Therapy and Anesthesiology",
-                    "Ethics, Psychiatry and Healthcare",
-                    "Behavioral Sciences and Biostatistics",
-                    "Statistics"
+                arch: "All", topics: [
+                    "Pharmacokinetics & Pharmacodynamics",
+                    "Pharmacodynamics",
+                    "Drug Metabolism & Interactions",
+                    "Autonomic Nervous System",
+                    "Adrenergic Pharmacology",
+                    "Cholinergic Pharmacology",
+                    "Cardiovascular Pharmacology",
+                    "Anticoagulation & Hemostasis",
+                    "Diuretics",
+                    "CNS Pharmacology",
+                    "Antipsychotics",
+                    "Antimicrobial Agents",
+                    "Antiviral Agents",
+                    "Antiparasitic Agents",
+                    "Cancer Pharmacology",
+                    "Endocrine Pharmacology",
+                    "Diabetes Pharmacology",
+                    "Lipid Management",
+                    "Respiratory Pharmacology",
+                    "Gastrointestinal Pharmacology",
+                    "Ophthalmology",
+                    "Renal Pharmacology",
+                    "Signal Transduction",
+                    "Drug Safety & Monitoring",
+                    "Immunopharmacology",
+                    "Bone & Calcium Disorders",
+                    "Endocrinology - Thyroid",
+                    "Endocrinology - Adrenal",
+                    "Endocrinology - Pituitary",
+                    "Diabetes",
+                    "Acid-Base & Electrolytes",
+                    "Gastroenterology - GERD & Esophageal",
+                    "Gastroenterology - Peptic Disease",
+                    "Gastroenterology - Pancreatic",
+                    "Gastroenterology - Diarrheal Diseases",
+                    "Gastroenterology - IBD & IBS",
+                    "Gastroenterology - Malabsorption",
+                    "Gastroenterology - Other",
+                    "Colorectal & GI Cancer",
+                    "Rheumatology - Inflammatory Arthritis",
+                    "Rheumatology - Crystal Arthropathy",
+                    "Rheumatology - Connective Tissue Diseases",
+                    "Rheumatology - Vasculitis",
+                    "Rheumatology - Osteoarthritis & General",
+                    "Cardiology - Ischemic Heart Disease",
+                    "Cardiology - General",
+                    "Preventive Medicine - Screening",
+                    "Preventive Medicine - Behavioral",
+                    "Preventive Medicine - Vaccination",
+                    "Travel Medicine",
+                    "Emergency Medicine",
+                    "Pulmonology"
                 ]
             },
+
+            { arch: "Anatomy and Embryology", topics: [] },
+
             {
-                "arch": "Basic Sciences",
-                "topics": [
-                    "Anatomy and Embryology",
-                    "Biochemistry and Genetics",
-                    "Physiology",
-                    "Neuroanatomy",
-                    "Histology",
-                    "Immunology",
-                    "Microbiology",
-                    "Pathology and Pathophysiology",
-                    "Pharmacology"
+                arch: "Biochemistry and Genetics", topics: [
+                    "Signal Transduction",
+                    "Drug Metabolism & Interactions"
                 ]
             },
+
             {
-                "arch": "Clinical Skills & Assessment",
-                "topics": [
-                    "ECG (Electrocardiography)",
-                    "Radiology"
+                arch: "Physiology", topics: [
+                    "Autonomic Nervous System",
+                    "Acid-Base & Electrolytes",
+                    "Bone & Calcium Disorders"
                 ]
             },
+
+            { arch: "Neuroanatomy", topics: [] },
+
+            { arch: "Histology", topics: [] },
+
             {
-                "arch": "Clinical Specialties",
-                "topics": [
-                    "Internal Medicine",
-                    "Surgery",
-                    "Obstetrics and Gynecology (ObGyn)",
-                    "Pediatrics",
-                    "Psychiatry",
-                    "Critical Care, Intensive Therapy and Anesthesiology"
+                arch: "Immunology", topics: [
+                    "Immunopharmacology"
                 ]
             },
+
             {
-                "arch": "Professional Development",
-                "topics": [
-                    "Ethics, Psychiatry and Healthcare",
-                    "Behavioral Sciences and Biostatistics",
-                    "Statistics"
+                arch: "Microbiology", topics: [
+                    "Antimicrobial Agents",
+                    "Antiviral Agents",
+                    "Antiparasitic Agents"
                 ]
-            }
-        ]
+            },
+
+            {
+                arch: "Pathology and Pathophysiology", topics: [
+                    "Diabetes",
+                    "Colorectal & GI Cancer",
+                    "Rheumatology - Inflammatory Arthritis",
+                    "Rheumatology - Crystal Arthropathy",
+                    "Rheumatology - Connective Tissue Diseases",
+                    "Rheumatology - Vasculitis",
+                    "Rheumatology - Osteoarthritis & General",
+                    "Cardiology - Ischemic Heart Disease",
+                    "Cardiology - General",
+                    "Pulmonology"
+                ]
+            },
+
+            {
+                arch: "Pharmacology", topics: [
+                    "Pharmacokinetics & Pharmacodynamics",
+                    "Pharmacodynamics",
+                    "Drug Metabolism & Interactions",
+                    "Adrenergic Pharmacology",
+                    "Cholinergic Pharmacology",
+                    "Cardiovascular Pharmacology",
+                    "Anticoagulation & Hemostasis",
+                    "Diuretics",
+                    "CNS Pharmacology",
+                    "Antipsychotics",
+                    "Cancer Pharmacology",
+                    "Endocrine Pharmacology",
+                    "Diabetes Pharmacology",
+                    "Lipid Management",
+                    "Respiratory Pharmacology",
+                    "Gastrointestinal Pharmacology",
+                    "Ophthalmology",
+                    "Renal Pharmacology",
+                    "Drug Safety & Monitoring"
+                ]
+            },
+
+            {
+                arch: "ECG (Electrocardiography)", topics: [
+                    "Cardiology - Ischemic Heart Disease",
+                    "Cardiology - General"
+                ]
+            },
+
+            { arch: "Radiology", topics: [] },
+
+            {
+                arch: "Internal Medicine", topics: [
+                    "Diabetes",
+                    "Endocrinology - Thyroid",
+                    "Endocrinology - Adrenal",
+                    "Endocrinology - Pituitary",
+                    "Gastroenterology - GERD & Esophageal",
+                    "Gastroenterology - Peptic Disease",
+                    "Gastroenterology - Pancreatic",
+                    "Gastroenterology - Diarrheal Diseases",
+                    "Gastroenterology - IBD & IBS",
+                    "Gastroenterology - Malabsorption",
+                    "Gastroenterology - Other",
+                    "Colorectal & GI Cancer",
+                    "Rheumatology - Inflammatory Arthritis",
+                    "Rheumatology - Crystal Arthropathy",
+                    "Rheumatology - Connective Tissue Diseases",
+                    "Rheumatology - Vasculitis",
+                    "Rheumatology - Osteoarthritis & General",
+                    "Pulmonology"
+                ]
+            },
+
+            { arch: "Surgery", topics: [] },
+
+            { arch: "Obstetrics and Gynecology (ObGyn)", topics: [] },
+
+            { arch: "Pediatrics", topics: [] },
+
+            {
+                arch: "Psychiatry", topics: [
+                    "Antipsychotics"
+                ]
+            },
+
+            {
+                arch: "Critical Care, Intensive Therapy and Anesthesiology", topics: [
+                    "Emergency Medicine"
+                ]
+            },
+
+            { arch: "Ethics, Psychiatry and Healthcare", topics: [] },
+
+            { arch: "Behavioral Sciences and Biostatistics", topics: [] },
+
+            { arch: "Statistics", topics: [] }
+        ];
+
 
         const topicMap = {
-            "Anatomy and Embryology": [
-                "Autonomic Nervous System Anatomy",
-                "ANS Ganglia Location",
-                "Endocrinology - Pituitary Anatomy"
+            "Pharmacokinetics & Pharmacodynamics": [
+                "Bioavailability Calculation",
+                "Biotransformation - Drug Activity",
+                "Biotransformation - General Principle",
+                "Biotransformation Classification",
+                "Drug Absorption and Bioavailability",
+                "Drug Clearance Concept",
+                "Drug Distribution and Protein Binding",
+                "Drug Elimination - General Principles",
+                "Drug Elimination vs. Therapeutic Effect",
+                "Drug Ionization - Clinical Application",
+                "Drug Ionization",
+                "Drug Permeation",
+                "Drug Redistribution",
+                "Drug Transport Mechanisms",
+                "Elimination Half-Life",
+                "First-Order Elimination Kinetics",
+                "First-Order vs. Zero-Order Kinetics",
+                "First-Pass Effect - Clinical Examples",
+                "First-Pass Effect",
+                "Graphic Analysis of Half-Life",
+                "Pharmacokinetics - Dose-Concentration Relationship",
+                "Pharmacokinetics - General Principles",
+                "Pharmacokinetics - Loading Dose Calculation",
+                "Pharmacokinetics - Loading Dose",
+                "Pharmacokinetics - Rate of Infusion",
+                "Phase I Biotransformation",
+                "Phase II Biotransformation",
+                "Plasma Level Curves",
+                "Plateau Principle",
+                "Clinical Steady State",
+                "Steady State Definition",
+                "Time to Steady State - Quantitative",
+                "Volume of Distribution - Clinical Interpretation",
+                "Volume of Distribution - Concept",
+                "Volume of Distribution - Drug Interactions",
+                "Volume of Distribution - Reference Values",
+                "Zero-Order Elimination - Drug Examples",
+                "Zero-Order Elimination Kinetics"
             ],
-            "Biochemistry and Genetics": [
-                "Acetylcholine Synthesis",
-                "Catecholamine Synthesis",
-                "Norepinephrine Synthesis Pathway",
-                "Alcohol Metabolism",
-                "Incretin Physiology",
-                "Parathyroid Hormone Function",
+            "Pharmacodynamics": [
+                "Pharmacodynamics - Affinity",
+                "Pharmacodynamics - Biochemical Relationships",
+                "Pharmacodynamics - Chemical Antagonism",
+                "Pharmacodynamics - Competitive Antagonism",
+                "Pharmacodynamics - Competitive Antagonist Effects",
+                "Pharmacodynamics - Drug Classifications",
+                "Pharmacodynamics - Efficacy",
+                "Pharmacodynamics - Enzyme Analogy",
+                "Pharmacodynamics - Full vs Partial Agonists",
+                "Pharmacodynamics - Noncompetitive Antagonism",
+                "Pharmacodynamics - Parallel Curves",
+                "Pharmacodynamics - Partial Agonist Duality",
+                "Pharmacodynamics - Population Variability",
+                "Pharmacodynamics - Potency",
+                "Pharmacodynamics - Potentiation",
+                "Pharmacodynamics - Quantal Dose-Response",
+                "Pharmacodynamics - Therapeutic Index Limitations",
+                "Pharmacodynamics - Therapeutic Index",
+                "Pharmacodynamics - Types of Antagonism"
+            ],
+            "Drug Metabolism & Interactions": [
                 "Acetylation - Genetic Polymorphisms",
-                "Genetic Polymorphisms - Pseudocholinesterases",
+                "Active Metabolites - Clinical Example",
+                "Alcohol Metabolism",
+                "Barbiturate Drug Interactions",
                 "CYP1A2 Enzyme System",
                 "CYP2D6 Enzyme System",
                 "CYP3A4 Enzyme System",
                 "Cytochrome P450 System",
-                "Lynch Syndrome",
-                "Familial Adenomatous Polyposis"
+                "Drug Interactions - Clinical Example",
+                "Drug Interactions - Protein Binding",
+                "Drug Interactions - Warfarin",
+                "Drug Interactions",
+                "General P450 Inducers",
+                "General P450 Inhibitors",
+                "Genetic Polymorphisms - Pseudocholinesterases",
+                "Glucuronidation - Clinical Examples",
+                "Glucuronidation",
+                "Glutathione Conjugation",
+                "Grapefruit Juice Drug Interactions",
+                "MAO Inhibitor Interactions",
+                "Nonmicrosomal Metabolism - Hydrolysis",
+                "Ritonavir Drug Interactions",
+                "Sildenafil Drug Interaction",
+                "Statin Drug Interactions",
+                "Tyramine and MAO Inhibitors",
+                "Verapamil Drug Interactions"
             ],
-            "Physiology": [
-                "Acid-Base Balance",
-                "Blood Pressure Formula",
-                "Blood Pressure Control",
-                "Hormonal Blood Pressure Control",
-                "Cardiac Action Potential - Phase 0",
-                "Cardiac Action Potential - Phase 2",
-                "Automaticity and Pacemaker Function",
-                "ANS Regulation of Heart Rate",
+            "Autonomic Nervous System": [
                 "ANS Dominance",
-                "Refractory Periods",
-                "Slow-Response Fibers",
-                "Sodium Channel States",
+                "ANS Ganglia Location",
+                "ANS Regulation of Heart Rate",
+                "Autonomic Drug List",
+                "Autonomic Nervous System Anatomy",
+                "Autonomic Pharmacology",
+                "Acetylcholine Synthesis",
+                "Catecholamine Synthesis",
+                "Norepinephrine Synthesis Pathway",
+                "Norepinephrine Termination",
+                "Norepinephrine vs Epinephrine"
+            ],
+            "Adrenergic Pharmacology": [
                 "Adrenergic Receptor Mechanisms",
                 "Adrenergic Receptor Sensitivity",
+                "Alpha Blocker Clinical Uses",
+                "Alpha Receptor Antagonists",
                 "Alpha-1 Adrenergic Receptors",
+                "Alpha-1 Agonists",
+                "Alpha-1 Antagonist Examples",
+                "Alpha-1 Blockers",
                 "Alpha-2 Adrenergic Receptors",
+                "Alpha-2 Agonists",
+                "Beta Agonists",
+                "Beta Blocker Effects",
+                "Beta Blocker Metabolic Effects",
+                "Beta Blocker Withdrawal",
+                "Beta Blockers in Angina",
+                "Beta Blockers in Heart Failure",
                 "Beta-1 Adrenergic Receptors",
                 "Beta-2 Adrenergic Receptors",
+                "Beta-2 Blockade Risks",
                 "Beta-2 Receptor Function",
+                "Beta-Blocker Classification",
+                "Beta-Blocker Clinical Uses",
+                "Beta-Blocker Pharmacokinetics",
+                "Cardioselective Beta-Blockers",
+                "Carvedilol in Angina",
+                "Clinical Uses of Catecholamines",
+                "Combined Alpha-Beta Blockers",
+                "Epinephrine Dose Effects",
+                "Epinephrine Reversal",
+                "Glucagon in Beta-Blocker Overdose",
+                "Indirect-Acting Agonists",
+                "Intrinsic Sympathomimetic Activity",
+                "Mixed Alpha Antagonists",
+                "Propranolol Special Uses",
+                "Selective Beta Agonists",
+                "Specialized Beta-Blocker Uses"
+            ],
+            "Cholinergic Pharmacology": [
+                "Acetylcholinesterase Inhibitors",
+                "AChE Inhibitor Classification",
+                "AChE Inhibitor Management",
+                "AChE Inhibitor Toxicity",
+                "AChE Regeneration",
+                "Bladder Muscarinic Effects",
+                "Blood Vessel Muscarinic Effects",
+                "Botulinum Toxin Mechanism",
+                "Cardiac Muscarinic Effects",
+                "Cholinergic Direct Activators",
                 "Cholinergic Receptors",
+                "GI Muscarinic Effects",
+                "Muscarinic Agonists",
+                "Muscarinic Antagonist Classes",
+                "Muscarinic Antagonists",
                 "Muscarinic Receptor Effects",
                 "Muscarinic Receptor Mechanisms",
                 "Nicotinic Receptor Mechanism",
                 "Nicotinic Receptor Properties",
-                "Dopamine Receptors",
-                "Serotonin Receptors",
-                "Pupillary Control",
-                "Circulating Calcium",
-                "Calcium Distribution",
-                "Electrolyte Effects - Potassium"
+                "Pilocarpine Mechanism",
+                "Respiratory Muscarinic Effects",
+                "Scopolamine Properties",
+                "Specific Muscarinic Antagonists"
             ],
-            "Neuroanatomy": [
+            "Cardiovascular Pharmacology": [
+                "ACE Inhibitors vs ARBs",
+                "ACE Inhibitors",
+                "Angina Pectoris - Definition",
+                "Antianginal Drug Strategy",
+                "Antiarrhythmic Drug Classification",
+                "Antihypertensive Strategy",
+                "Automaticity and Pacemaker Function",
+                "Blood Pressure Control",
+                "Blood Pressure Formula",
+                "Calcium Channel Blockers in Angina",
+                "Calcium Channel Blockers",
+                "Cardiac Action Potential - Phase 0",
+                "Cardiac Action Potential - Phase 2",
+                "Cardiac and Renal Pharmacology",
+                "Class IA Antiarrhythmics - Procainamide",
+                "Class IA Antiarrhythmics - Quinidine",
+                "Class IB Antiarrhythmics - Lidocaine",
+                "Class IB Antiarrhythmics",
+                "Class IC Antiarrhythmics",
+                "Class II Antiarrhythmics - Beta Blockers",
+                "Class III Antiarrhythmics - Mechanism",
+                "Class IV Antiarrhythmics - Calcium Channel Blockers",
+                "Diastolic Heart Failure",
+                "Digoxin Mechanism",
+                "Digoxin Toxicity",
+                "Direct Vasodilators",
+                "Drug Classification - Antiarrhythmics",
+                "Drug Classification - Heart Failure",
+                "First-line Antihypertensives",
+                "Heart Failure Pharmacotherapy",
+                "Heart Failure Primary Treatment",
+                "Hormonal Blood Pressure Control",
+                "Hypertensive Emergency",
+                "Long QT Syndrome",
+                "Mortality-Reducing Drugs in Angina",
+                "Nitrates - Clinical Benefits",
+                "Nitrates - Formulations",
+                "Nitrates - Mechanism",
+                "Nitrates - Side Effects",
+                "PDE Inhibitors",
+                "Potassium Channel Openers",
+                "Pregnancy Hypertension",
+                "Pulmonary Hypertension",
+                "Ranolazine - Contraindications",
+                "Ranolazine - Mechanism",
+                "Refractory Periods",
+                "Slow-Response Fibers",
+                "Sodium Channel States",
+                "Sotalol Mechanism",
+                "Sotalol",
+                "Spironolactone in Heart Failure",
+                "Torsades de Pointes Treatment",
+                "Types of Angina",
+                "Vasodilator Specificity",
+                "Wolff-Parkinson-White Syndrome"
+            ],
+            "Anticoagulation & Hemostasis": [
+                "Anticoagulants - Antidotes",
+                "Anticoagulants - Heparin vs Warfarin",
+                "Anticoagulants - Mechanism of Action",
+                "Anticoagulants - Monitoring",
+                "Anticoagulants - Side Effects",
+                "Anticoagulants - Warfarin Mechanism",
+                "Antiplatelet Drugs - ADP Receptor Blockers",
+                "Antiplatelet Drugs - Aspirin",
+                "Aspirin",
+                "Colony Stimulating Factors",
+                "Direct Thrombin Inhibitors",
+                "Drugs Used in Blood Disorders",
+                "Thrombolytics - Drug Comparison",
+                "Thrombolytics - Mechanism"
+            ],
+            "Diuretics": [
+                "Carbonic Anhydrase Inhibitors",
+                "Loop Diuretics",
+                "Osmotic Diuretics",
+                "Potassium-Sparing Diuretics",
+                "Thiazide Diuretics"
+            ],
+            "CNS Pharmacology": [
+                "Absence Seizures",
+                "Alzheimer's Disease Drugs",
+                "Alzheimer's Disease Treatment",
+                "Barbiturates vs Benzodiazepines",
+                "Benzodiazepine Clinical Uses",
+                "Benzodiazepine Metabolism",
+                "Benzodiazepines - Mechanism",
+                "Buspirone",
+                "CNS Pharmacology",
+                "COMT Inhibitors",
+                "Cross-tolerance",
                 "Dopamine Pathways",
-                "Neurotransmitters",
+                "Dopamine Receptors",
+                "Drugs of Abuse - CNS Depressants",
+                "Drugs of Abuse - CNS Stimulants",
+                "Drugs of Abuse - Hallucinogens",
+                "Drugs of Abuse - Miscellaneous",
+                "Drugs of Abuse - Opioids",
+                "Extrapyramidal Side Effects",
+                "Flumazenil",
+                "Fosphenytoin",
+                "General Anesthetics",
+                "Intravenous Anesthetics",
+                "Levodopa Treatment",
+                "Lithium Mechanism",
+                "Lithium Side Effects",
+                "Local Anesthetics",
+                "Malignant Hyperthermia",
                 "Monoamine Oxidases",
-                "MAO Types"
+                "MAO Types",
+                "Neuroleptic Malignant Syndrome",
+                "Neurotransmitters",
+                "Non-BZ Sleep Drugs",
+                "Opioid Analgesics",
+                "Other Anticonvulsants",
+                "Primary Anticonvulsants",
+                "Seizure Mechanisms",
+                "Serotonin Receptors",
+                "Serotonin Syndrome",
+                "Skeletal Muscle Relaxants",
+                "SSRI Mechanism",
+                "Status Epilepticus",
+                "Tardive Dyskinesia",
+                "Tricyclic Antidepressants",
+                "Withdrawal Management"
             ],
-            "Histology": [
-                "Synovial Fluid Analysis"
+            "Antipsychotics": [
+                "Antipsychotic Mechanisms",
+                "Clozapine"
             ],
-            "Immunology": [
-                "ANCA Testing",
-                "Antinuclear Antibodies",
-                "Specific Autoantibodies",
-                "Thyroid Antibodies",
-                "CREST Syndrome - Antibodies",
-                "Sjögren Syndrome - Antibodies",
-                "Celiac Disease - Antibodies",
-                "Celiac Disease - IgA Deficiency"
-            ],
-            "Microbiology": [
+            "Antimicrobial Agents": [
+                "Aminoglycoside Toxicity",
+                "Aminoglycosides",
+                "Amphotericin B Toxicity",
+                "Amphotericin B",
+                "Antibiotic Spectrum",
                 "Antimicrobial Agents",
                 "Antimicrobial Principles",
-                "Antibiotic Spectrum",
-                "Beta-lactam Resistance",
-                "Penicillin Mechanisms",
-                "Aminoglycosides",
-                "Macrolides",
-                "Tetracyclines",
-                "Fluoroquinolones",
-                "Sulfonamides and Trimethoprim",
-                "Vancomycin",
-                "Metronidazole",
-                "Isoniazid",
-                "Tuberculosis Treatment",
-                "Amphotericin B",
                 "Azole Antifungals",
-                "Acyclovir Mechanism",
+                "Beta-lactam Resistance",
+                "Cephalosporin Classifications",
+                "Fluoroquinolone Side Effects",
+                "Fluoroquinolones",
+                "Isoniazid",
+                "Macrolides",
+                "Metronidazole",
+                "Penicillin Mechanisms",
+                "Sulfonamide Allergies",
+                "Sulfonamides and Trimethoprim",
+                "Tetracyclines",
+                "Tuberculosis Treatment",
+                "Vancomycin"
+            ],
+            "Antiviral Agents": [
                 "Acyclovir Clinical Use",
+                "Acyclovir Mechanism",
                 "Acyclovir Side Effects",
-                "Ganciclovir vs Acyclovir",
-                "Ganciclovir Side Effects",
-                "Ribavirin Mechanism",
                 "Antiviral Drug Mechanisms",
                 "Fusion Inhibitors",
+                "Ganciclovir Side Effects",
+                "Ganciclovir vs Acyclovir",
+                "HIV Prophylaxis",
                 "HIV Treatment - NRTIs",
+                "Influenza Treatment",
                 "NRTI Side Effects Comparison",
-                "Zidovudine (AZT) Side Effects",
                 "Protease Inhibitors Mechanism",
-                "Ritonavir Drug Interactions",
+                "Ribavirin Mechanism",
+                "Zidovudine (AZT) Side Effects"
+            ],
+            "Antiparasitic Agents": [
                 "Anthelmintic Drugs",
-                "Protozoal Infections Treatment",
-                "Antimalarial Treatment",
                 "Antimalarial Side Effects",
-                "Malaria Prophylaxis",
+                "Antimalarial Treatment",
                 "Malaria Prophylaxis - Pregnancy",
+                "Malaria Prophylaxis",
+                "Protozoal Infections Treatment"
+            ],
+            "Cancer Pharmacology": [
+                "5-Fluorouracil",
+                "6-Mercaptopurine",
+                "All-trans Retinoic Acid",
+                "Anticancer Drug Principles",
+                "Anticancer Drug",
+                "Bleomycin",
+                "Cancer Drug Toxicity",
+                "Cell Cycle Specificity",
+                "Cisplatin",
+                "Cyclophosphamide Toxicity",
+                "Cyclophosphamide",
+                "Doxorubicin",
+                "Growth Fraction Concept",
+                "Methotrexate Monitoring",
+                "Methotrexate Rescue",
+                "Methotrexate",
+                "Supportive Care",
+                "Targeted Cancer Therapy",
+                "Thymineless Death",
+                "Vinca Alkaloids"
+            ],
+            "Endocrine Pharmacology": [
+                "Adenosine Pharmacokinetics",
+                "Adenosine",
+                "Antithyroid Drugs in Pregnancy",
+                "Antithyroid Medications",
+                "Endocrine Pharmacology",
+                "Glucocorticoids",
+                "Insulin - IV Administration",
+                "Insulin Preparations",
+                "Insulin Types - Duration",
+                "Levothyroxine Administration",
+                "Oral Contraceptives - Mechanism",
+                "Radioactive Iodine Therapy",
+                "Steroid Hormones - Estrogens",
+                "Steroid Hormones - SERMs",
+                "Thyroid - Hyperthyroidism Treatment",
+                "Thyroid - Pregnancy Safety",
+                "Thyroid - Thioamides"
+            ],
+            "Diabetes Pharmacology": [
+                "Dawn Phenomenon",
+                "Diabetes Medications - Acarbose",
+                "Diabetes Medications - GLP-1",
+                "Diabetes Medications - Metformin",
+                "Diabetes Medications - Sulfonylureas",
+                "DKA Management",
+                "Factitious Hyperinsulinism",
+                "Hypoglycemia - Treatment",
+                "Hypoglycemia Contraindications",
+                "Incretin Physiology",
+                "Metformin Advantages",
+                "Somogyi Effect"
+            ],
+            "Lipid Management": [
+                "Bile Acid Sequestrants - Mechanism",
+                "Bile Acid Sequestrants - Side Effects",
+                "Ezetimibe - Mechanism",
+                "Fibrates - Clinical Use",
+                "Fibrates - Mechanism",
+                "HMG-CoA Reductase Inhibitors - High-Intensity",
+                "Nicotinic Acid - Effects on Lipoproteins",
+                "Nicotinic Acid - Side Effects",
+                "Nonstatin Drugs Clinical Evidence",
+                "Orlistat - Mechanism and Use",
+                "Statins - Mechanism of Action",
+                "Statins - Serious Side Effects"
+            ],
+            "Respiratory Pharmacology": [
+                "Asthma",
+                "Leukotriene Modifiers"
+            ],
+            "Gastrointestinal Pharmacology": [
+                "Antiemetics",
+                "Constipation",
+                "Diarrhea",
                 "H. pylori Management",
+                "PPI Side Effects"
+            ],
+            "Ophthalmology": [
+                "Closed-Angle Glaucoma Emergency",
+                "Closed-Angle Glaucoma",
+                "Glaucoma Treatment Strategy",
+                "Open-Angle Glaucoma",
+                "Pupillary Control",
+                "Timolol in Glaucoma"
+            ],
+            "Renal Pharmacology": [
+                "Electrolyte Effects - Potassium",
+                "Renal Drug Clearance",
+                "Renal Elimination Mechanisms",
+                "Renal Filtration Characteristics",
+                "Urinary pH Modification"
+            ],
+            "Signal Transduction": [
+                "Signaling Mechanisms - ANS Receptor Classification",
+                "Signaling Mechanisms - G-Protein Coupled Receptors",
+                "Signaling Mechanisms - GABA Receptor",
+                "Signaling Mechanisms - Gi Proteins",
+                "Signaling Mechanisms - Glucocorticoid Mechanism",
+                "Signaling Mechanisms - Gq Pathway Receptors",
+                "Signaling Mechanisms - Gq Protein Pathway",
+                "Signaling Mechanisms - Gs Proteins",
+                "Signaling Mechanisms - Intracellular Receptor Examples",
+                "Signaling Mechanisms - Intracellular Receptor Timing",
+                "Signaling Mechanisms - Intracellular Receptors",
+                "Signaling Mechanisms - Ion Channel Coupled Receptors",
+                "Signaling Mechanisms - IP3 and DAG Function",
+                "Signaling Mechanisms - Nicotinic Receptor",
+                "Signaling Mechanisms - Nitric Oxide and cGMP",
+                "Signaling Mechanisms - Nitric Oxide Synthesis",
+                "Signaling Mechanisms - NO-Acting Drugs",
+                "Signaling Mechanisms - Protein Kinase A"
+            ],
+            "Drug Safety & Monitoring": [
+                "Clinical Applications",
+                "Clinical Monitoring - Patient Safety",
+                "Cyanide Poisoning Treatment",
+                "Drug Combinations Rationale",
+                "Drug Safety - Contraindications",
+                "Drug Safety",
+                "General Principles",
+                "Special Distribution Barriers - Blood-Brain",
+                "Special Distribution Barriers - Placental"
+            ],
+            "Immunopharmacology": [
+                "DMARDs",
+                "Drugs for Inflammatory and Related Disorders",
+                "Histamine and Antihistamines",
+                "Immunopharmacology",
+                "NSAIDs",
+                "TNF Inhibitors"
+            ],
+            "Bone & Calcium Disorders": [
+                "Bone Disorders - Bisphosphonates",
+                "Bone Disorders - Teriparatide",
+                "Calcium Correction Formula",
+                "Calcium Distribution",
+                "Circulating Calcium",
+                "Familial Hypocalciuric Hypercalcemia",
+                "Hungry Bones Syndrome",
+                "Hypercalcemia Causes",
+                "Hypercalcemia Symptoms",
+                "Hypercalcemia Treatment",
+                "Hypocalcemia Causes",
+                "Hypocalcemia Signs",
+                "Parathyroid Hormone Function",
+                "Primary Hyperparathyroidism",
+                "Secondary vs Primary Hyperparathyroidism"
+            ],
+            "Endocrinology - Thyroid": [
+                "Adult Hypothyroidism Symptoms",
+                "Amiodarone-Induced Thyrotoxicosis",
+                "Congenital Hypothyroidism",
+                "Graves Disease Demographics",
+                "Graves Disease Laboratory Findings",
+                "Graves Disease Pathophysiology",
+                "Graves Disease Risk Factors",
+                "Hashimoto Thyroiditis",
+                "Hyperthyroidism Physical Exam",
+                "Hyperthyroidism Symptoms",
+                "Hypothyroidism Causes",
+                "Hypothyroidism Laboratory Diagnosis",
+                "Lymphocytic Thyroiditis",
+                "Medullary Thyroid Carcinoma",
+                "Myxedema Coma",
+                "Subacute Thyroiditis Characteristics",
+                "Subacute Thyroiditis",
+                "Thyroid Antibodies",
+                "Thyroid Cancer Diagnosis",
+                "Thyroid Cancer Types",
+                "Thyroid Nodule Malignancy Risk",
+                "Thyroid Storm",
+                "Thyroiditis Types",
+                "Toxic Multinodular Goiter"
+            ],
+            "Endocrinology - Adrenal": [
+                "Addison Disease",
+                "Adrenal Crisis",
+                "Adrenal Insufficiency",
+                "C-11 Hydroxylase Deficiency",
+                "Congenital Adrenal Hyperplasia",
+                "Cushing Syndrome Etiology",
+                "Cushing Syndrome Screening",
+                "Hyperaldosteronism Screening",
+                "Pheochromocytoma Diagnosis",
+                "Pheochromocytoma Management",
+                "Pheochromocytoma",
+                "Primary Hyperaldosteronism"
+            ],
+            "Endocrinology - Pituitary": [
+                "ACTH Levels in Cushing",
+                "Endocrinology - Acromegaly Treatment",
+                "Endocrinology - Acromegaly",
+                "Endocrinology - Diabetes Insipidus",
+                "Endocrinology - Hyperprolactinemia Treatment",
+                "Endocrinology - Hyperprolactinemia",
+                "Endocrinology - Hypopituitarism",
+                "Endocrinology - Pituitary Anatomy",
+                "Endocrinology - SIADH",
+                "Endocrinology - Thyroid Function Tests",
+                "Endocrinology - Thyroid Function",
+                "Hyperparathyroidism Surgery Indications",
+                "Hypogonadism",
+                "Klinefelter Syndrome",
+                "MEN Syndromes"
+            ],
+            "Diabetes": [
+                "Diabetes - Type 1 vs Type 2",
+                "Diabetes Classification",
+                "Diabetes Complications",
+                "Diabetes Diagnosis Criteria",
+                "Diabetes Diagnosis",
+                "Diabetes Initial Treatment",
+                "Diabetes Management",
+                "Diabetic Ketoacidosis",
+                "Diabetic Nephropathy",
+                "Diabetic Neuropathy",
+                "Diabetic Retinopathy Screening",
+                "Emergency Medicine - Diabetic Ketoacidosis",
+                "HONK Syndrome",
+                "Insulinoma Diagnosis",
+                "Lipid Goals in Diabetes",
+                "Microalbuminuria Definition"
+            ],
+            "Acid-Base & Electrolytes": [
+                "Acid-Base Balance",
+                "Bartter Syndrome"
+            ],
+            "Gastroenterology - GERD & Esophageal": [
+                "Achalasia Clinical Presentation",
+                "Achalasia Diagnosis",
+                "Achalasia Imaging",
+                "Achalasia Treatment",
+                "Achalasia",
+                "Barrett Esophagus",
                 "Candida Esophagitis Risk Factors",
                 "Candida Esophagitis Treatment",
+                "Chronic Cough and GERD",
+                "Diffuse Esophageal Spasm",
+                "Dysphagia Classification",
+                "Eosinophilic Esophagitis",
+                "Esophageal Cancer Presentation",
+                "Esophageal Cancer Prognosis",
+                "Esophageal Cancer Risk Factors",
+                "Esophageal Spasm Diagnosis",
+                "GERD Diagnosis",
+                "GERD Diagnostic Workup Order",
+                "GERD Pathophysiology",
+                "GERD Surgical Treatment",
+                "Mallory-Weiss Syndrome",
+                "Oropharyngeal Dysphagia",
+                "Pill Esophagitis",
+                "Schatzki's Ring vs PVS",
+                "Scleroderma Esophageal Involvement",
+                "Zenker Diverticulum"
+            ],
+            "Gastroenterology - Peptic Disease": [
+                "Alarm Features for Endoscopy",
+                "Epigastric Pain Causes",
+                "Gastritis",
+                "Peptic Ulcer Disease",
+                "Zollinger-Ellison Syndrome"
+            ],
+            "Gastroenterology - Pancreatic": [
+                "Acute Pancreatitis",
+                "Chronic Pancreatitis - Diagnosis",
+                "Chronic Pancreatitis - Imaging",
+                "Chronic Pancreatitis - Laboratory Finding",
+                "Chronic Pancreatitis - Treatment",
+                "Chronic Pancreatitis - Young Adults"
+            ],
+            "Gastroenterology - Diarrheal Diseases": [
                 "C. difficile - Clinical Presentation",
                 "C. difficile - Current Treatment",
                 "C. difficile - Diagnosis",
@@ -15799,6 +16758,11 @@
                 "C. difficile - Recurrence Management",
                 "C. difficile - Risk Factors",
                 "C. difficile - Severe Disease Indicators",
+                "Chronic Diarrhea - Artificial Sweeteners",
+                "Chronic Diarrhea - Carcinoid",
+                "Chronic Diarrhea - IBS vs Organic Disease",
+                "Chronic Diarrhea - Microscopic Colitis",
+                "Chronic Diarrhea - Small Bowel Bacterial Overgrowth",
                 "Infectious Diarrhea - Bacillus cereus",
                 "Infectious Diarrhea - Campylobacter",
                 "Infectious Diarrhea - Cryptosporidium Diagnosis",
@@ -15817,431 +16781,9 @@
                 "Infectious Diarrhea - Treatment",
                 "Infectious Diarrhea - Vibrio",
                 "Infectious Diarrhea",
-                "Traveler's Diarrhea",
-                "Whipple Disease - Diagnosis",
-                "Tropical Sprue vs Whipple - Treatment Duration"
+                "Traveler's Diarrhea"
             ],
-            "Pathology and Pathophysiology": [
-                "Cell Cycle Specificity",
-                "Growth Fraction Concept",
-                "Seizure Mechanisms",
-                "GERD Pathophysiology",
-                "Graves Disease Pathophysiology",
-                "Dawn Phenomenon",
-                "Somogyi Effect",
-                "Carcinoid Syndrome - Pathophysiology",
-                "Barrett Esophagus"
-            ],
-            "Pharmacology": [
-                "General Principles",
-                "Drug Absorption and Bioavailability",
-                "Bioavailability Calculation",
-                "Drug Distribution and Protein Binding",
-                "Special Distribution Barriers - Blood-Brain",
-                "Special Distribution Barriers - Placental",
-                "Volume of Distribution - Concept",
-                "Volume of Distribution - Clinical Interpretation",
-                "Volume of Distribution - Reference Values",
-                "Volume of Distribution - Drug Interactions",
-                "Drug Redistribution",
-                "Drug Elimination - General Principles",
-                "Drug Elimination vs. Therapeutic Effect",
-                "Renal Drug Clearance",
-                "Renal Elimination Mechanisms",
-                "Renal Filtration Characteristics",
-                "Drug Clearance Concept",
-                "Elimination Half-Life",
-                "Clinical Steady State",
-                "Steady State Definition",
-                "Time to Steady State - Quantitative",
-                "Graphic Analysis of Half-Life",
-                "Plateau Principle",
-                "First-Order Elimination Kinetics",
-                "Zero-Order Elimination Kinetics",
-                "Zero-Order Elimination - Drug Examples",
-                "First-Order vs. Zero-Order Kinetics",
-                "Plasma Level Curves",
-                "First-Pass Effect",
-                "First-Pass Effect - Clinical Examples",
-                "Biotransformation - General Principle",
-                "Biotransformation - Drug Activity",
-                "Biotransformation Classification",
-                "Phase I Biotransformation",
-                "Phase II Biotransformation",
-                "Nonmicrosomal Metabolism - Hydrolysis",
-                "Glucuronidation",
-                "Glucuronidation - Clinical Examples",
-                "Glutathione Conjugation",
-                "General P450 Inducers",
-                "General P450 Inhibitors",
-                "Grapefruit Juice Drug Interactions",
-                "Active Metabolites - Clinical Example",
-                "Drug Ionization",
-                "Drug Ionization - Clinical Application",
-                "Drug Permeation",
-                "Drug Transport Mechanisms",
-                "Urinary pH Modification",
-                "Pharmacokinetics - General Principles",
-                "Pharmacokinetics - Dose-Concentration Relationship",
-                "Pharmacokinetics - Loading Dose",
-                "Pharmacokinetics - Loading Dose Calculation",
-                "Pharmacokinetics - Rate of Infusion",
-                "Pharmacodynamics - Affinity",
-                "Pharmacodynamics - Efficacy",
-                "Pharmacodynamics - Potency",
-                "Pharmacodynamics - Therapeutic Index",
-                "Pharmacodynamics - Therapeutic Index Limitations",
-                "Pharmacodynamics - Full vs Partial Agonists",
-                "Pharmacodynamics - Partial Agonist Duality",
-                "Pharmacodynamics - Competitive Antagonism",
-                "Pharmacodynamics - Competitive Antagonist Effects",
-                "Pharmacodynamics - Noncompetitive Antagonism",
-                "Pharmacodynamics - Chemical Antagonism",
-                "Pharmacodynamics - Types of Antagonism",
-                "Pharmacodynamics - Enzyme Analogy",
-                "Pharmacodynamics - Biochemical Relationships",
-                "Pharmacodynamics - Drug Classifications",
-                "Pharmacodynamics - Parallel Curves",
-                "Pharmacodynamics - Population Variability",
-                "Pharmacodynamics - Quantal Dose-Response",
-                "Pharmacodynamics - Potentiation",
-                "Drug Interactions",
-                "Drug Interactions - Clinical Example",
-                "Drug Interactions - Protein Binding",
-                "Drug Interactions - Warfarin",
-                "Drug Safety",
-                "Drug Safety - Contraindications",
-                "Clinical Monitoring - Patient Safety",
-                "Drug Combinations Rationale",
-                "Cross-tolerance",
-                "Autonomic Pharmacology",
-                "Autonomic Drug List",
-                "Signaling Mechanisms - G-Protein Coupled Receptors",
-                "Signaling Mechanisms - ANS Receptor Classification",
-                "Signaling Mechanisms - Ion Channel Coupled Receptors",
-                "Signaling Mechanisms - Intracellular Receptors",
-                "Signaling Mechanisms - Intracellular Receptor Examples",
-                "Signaling Mechanisms - Intracellular Receptor Timing",
-                "Signaling Mechanisms - Gs Proteins",
-                "Signaling Mechanisms - Gi Proteins",
-                "Signaling Mechanisms - Gq Protein Pathway",
-                "Signaling Mechanisms - Gq Pathway Receptors",
-                "Signaling Mechanisms - Protein Kinase A",
-                "Signaling Mechanisms - IP3 and DAG Function",
-                "Signaling Mechanisms - Nitric Oxide Synthesis",
-                "Signaling Mechanisms - Nitric Oxide and cGMP",
-                "Signaling Mechanisms - NO-Acting Drugs",
-                "Signaling Mechanisms - GABA Receptor",
-                "Signaling Mechanisms - Nicotinic Receptor",
-                "Signaling Mechanisms - Glucocorticoid Mechanism",
-                "Cholinergic Direct Activators",
-                "Muscarinic Agonists",
-                "Pilocarpine Mechanism",
-                "Muscarinic Antagonists",
-                "Muscarinic Antagonist Classes",
-                "Specific Muscarinic Antagonists",
-                "Scopolamine Properties",
-                "Cardiac Muscarinic Effects",
-                "Blood Vessel Muscarinic Effects",
-                "Respiratory Muscarinic Effects",
-                "GI Muscarinic Effects",
-                "Bladder Muscarinic Effects",
-                "AChE Inhibitor Classification",
-                "Acetylcholinesterase Inhibitors",
-                "AChE Inhibitor Management",
-                "AChE Inhibitor Toxicity",
-                "AChE Regeneration",
-                "Botulinum Toxin Mechanism",
-                "Ganglionic Blockers",
-                "Ganglion Blocking Effects",
-                "Skeletal Muscle Relaxants",
-                "Clinical Uses of Catecholamines",
-                "Norepinephrine vs Epinephrine",
-                "Epinephrine Dose Effects",
-                "Epinephrine Reversal",
-                "Norepinephrine Termination",
-                "Alpha Receptor Antagonists",
-                "Alpha Blocker Clinical Uses",
-                "Alpha-1 Agonists",
-                "Alpha-1 Antagonist Examples",
-                "Alpha-1 Blockers",
-                "Alpha-2 Agonists",
-                "Mixed Alpha Antagonists",
-                "Beta Agonists",
-                "Selective Beta Agonists",
-                "Beta Blocker Effects",
-                "Beta Blocker Metabolic Effects",
-                "Beta Blocker Withdrawal",
-                "Beta-Blocker Classification",
-                "Beta-Blocker Clinical Uses",
-                "Beta-Blocker Pharmacokinetics",
-                "Cardioselective Beta-Blockers",
-                "Specialized Beta-Blocker Uses",
-                "Propranolol Special Uses",
-                "Beta-2 Blockade Risks",
-                "Combined Alpha-Beta Blockers",
-                "Intrinsic Sympathomimetic Activity",
-                "Indirect-Acting Agonists",
-                "CNS Pharmacology",
-                "General Anesthetics",
-                "Intravenous Anesthetics",
-                "Local Anesthetics",
-                "Malignant Hyperthermia",
-                "Primary Anticonvulsants",
-                "Other Anticonvulsants",
-                "Fosphenytoin",
-                "Status Epilepticus",
-                "Absence Seizures",
-                "Barbiturates vs Benzodiazepines",
-                "Barbiturate Drug Interactions",
-                "Benzodiazepines - Mechanism",
-                "Benzodiazepine Clinical Uses",
-                "Benzodiazepine Metabolism",
-                "Flumazenil",
-                "Non-BZ Sleep Drugs",
-                "Buspirone",
-                "Tricyclic Antidepressants",
-                "SSRI Mechanism",
-                "MAO Inhibitor Interactions",
-                "Tyramine and MAO Inhibitors",
-                "Lithium Mechanism",
-                "Lithium Side Effects",
-                "Antipsychotic Mechanisms",
-                "Clozapine",
-                "Extrapyramidal Side Effects",
-                "Tardive Dyskinesia",
-                "Neuroleptic Malignant Syndrome",
-                "Levodopa Treatment",
-                "COMT Inhibitors",
-                "Alzheimer's Disease Drugs",
-                "Alzheimer's Disease Treatment",
-                "Drugs of Abuse - CNS Depressants",
-                "Drugs of Abuse - CNS Stimulants",
-                "Drugs of Abuse - Hallucinogens",
-                "Drugs of Abuse - Opioids",
-                "Drugs of Abuse - Miscellaneous",
-                "Withdrawal Management",
-                "Opioid Analgesics",
-                "NSAIDs",
-                "Acetaminophen",
-                "Cardiac and Renal Pharmacology",
-                "Antiarrhythmic Drug Classification",
-                "Drug Classification - Antiarrhythmics",
-                "Class IA Antiarrhythmics - Procainamide",
-                "Class IA Antiarrhythmics - Quinidine",
-                "Class IB Antiarrhythmics",
-                "Class IB Antiarrhythmics - Lidocaine",
-                "Class IC Antiarrhythmics",
-                "Class II Antiarrhythmics - Beta Blockers",
-                "Class III Antiarrhythmics - Mechanism",
-                "Class IV Antiarrhythmics - Calcium Channel Blockers",
-                "Amiodarone",
-                "Amiodarone Effects",
-                "Amiodarone Side Effects",
-                "Sotalol",
-                "Sotalol Mechanism",
-                "Long QT Syndrome",
-                "Torsades de Pointes Treatment",
-                "Wolff-Parkinson-White Syndrome",
-                "Digoxin Mechanism",
-                "Digoxin Toxicity",
-                "Glucagon in Beta-Blocker Overdose",
-                "Heart Failure Pharmacotherapy",
-                "Heart Failure Primary Treatment",
-                "Drug Classification - Heart Failure",
-                "Beta Blockers in Heart Failure",
-                "Spironolactone in Heart Failure",
-                "Diastolic Heart Failure",
-                "Antianginal Drug Strategy",
-                "Types of Angina",
-                "Angina Pectoris - Definition",
-                "Nitrates - Mechanism",
-                "Nitrates - Clinical Benefits",
-                "Nitrates - Formulations",
-                "Nitrates - Side Effects",
-                "Beta Blockers in Angina",
-                "Carvedilol in Angina",
-                "Calcium Channel Blockers in Angina",
-                "Calcium Channel Blockers",
-                "Ranolazine - Mechanism",
-                "Ranolazine - Contraindications",
-                "Mortality-Reducing Drugs in Angina",
-                "Antihypertensive Strategy",
-                "First-line Antihypertensives",
-                "ACE Inhibitors",
-                "ACE Inhibitors vs ARBs",
-                "Direct Vasodilators",
-                "Vasodilator Specificity",
-                "Potassium Channel Openers",
-                "Verapamil Drug Interactions",
-                "Sildenafil Drug Interaction",
-                "PDE Inhibitors",
-                "Hypertensive Emergency",
-                "Pregnancy Hypertension",
-                "Pulmonary Hypertension",
-                "Loop Diuretics",
-                "Thiazide Diuretics",
-                "Potassium-Sparing Diuretics",
-                "Carbonic Anhydrase Inhibitors",
-                "Osmotic Diuretics",
-                "Anticoagulants - Mechanism of Action",
-                "Anticoagulants - Heparin vs Warfarin",
-                "Anticoagulants - Warfarin Mechanism",
-                "Anticoagulants - Monitoring",
-                "Anticoagulants - Side Effects",
-                "Anticoagulants - Antidotes",
-                "Direct Thrombin Inhibitors",
-                "Thrombolytics - Mechanism",
-                "Thrombolytics - Drug Comparison",
-                "Antiplatelet Drugs - Aspirin",
-                "Antiplatelet Drugs - ADP Receptor Blockers",
-                "Aspirin",
-                "Statins - Mechanism of Action",
-                "Statins - Serious Side Effects",
-                "HMG-CoA Reductase Inhibitors - High-Intensity",
-                "Statin Drug Interactions",
-                "Bile Acid Sequestrants - Mechanism",
-                "Bile Acid Sequestrants - Side Effects",
-                "Ezetimibe - Mechanism",
-                "Fibrates - Mechanism",
-                "Fibrates - Clinical Use",
-                "Nicotinic Acid - Effects on Lipoproteins",
-                "Nicotinic Acid - Side Effects",
-                "Nonstatin Drugs Clinical Evidence",
-                "Endocrine Pharmacology",
-                "Insulin Preparations",
-                "Insulin Types - Duration",
-                "Insulin - IV Administration",
-                "Diabetes Medications - Metformin",
-                "Metformin Advantages",
-                "Diabetes Medications - Sulfonylureas",
-                "Diabetes Medications - Acarbose",
-                "Diabetes Medications - GLP-1",
-                "Hypoglycemia - Treatment",
-                "Hypoglycemia Contraindications",
-                "Thyroid - Thioamides",
-                "Antithyroid Medications",
-                "Antithyroid Drugs in Pregnancy",
-                "Thyroid - Pregnancy Safety",
-                "Levothyroxine Administration",
-                "Radioactive Iodine Therapy",
-                "Thyroid - Hyperthyroidism Treatment",
-                "Amiodarone-Induced Thyrotoxicosis",
-                "Glucocorticoids",
-                "Steroid Hormones - Estrogens",
-                "Steroid Hormones - SERMs",
-                "Oral Contraceptives - Mechanism",
-                "Bone Disorders - Bisphosphonates",
-                "Bone Disorders - Teriparatide",
-                "Orlistat - Mechanism and Use",
-                "Histamine and Antihistamines",
-                "Antiemetics",
-                "Leukotriene Modifiers",
-                "Asthma",
-                "Glaucoma Treatment Strategy",
-                "Open-Angle Glaucoma",
-                "Closed-Angle Glaucoma",
-                "Closed-Angle Glaucoma Emergency",
-                "Timolol in Glaucoma",
-                "Peptic Ulcer Disease",
-                "PPI Side Effects",
-                "Anticancer Drug Principles",
-                "Anticancer Drug",
-                "Cancer Drug Toxicity",
-                "Targeted Cancer Therapy",
-                "Cell Cycle Specificity",
-                "5-Fluorouracil",
-                "6-Mercaptopurine",
-                "All-trans Retinoic Acid",
-                "Methotrexate",
-                "Methotrexate Monitoring",
-                "Methotrexate Rescue",
-                "Thymineless Death",
-                "Cyclophosphamide",
-                "Cyclophosphamide Toxicity",
-                "Doxorubicin",
-                "Bleomycin",
-                "Cisplatin",
-                "Vinca Alkaloids",
-                "Supportive Care",
-                "Colony Stimulating Factors",
-                "Immunopharmacology",
-                "DMARDs",
-                "TNF Inhibitors",
-                "Drugs for Inflammatory and Related Disorders",
-                "Drugs Used in Blood Disorders",
-                "Aminoglycoside Toxicity",
-                "Fluoroquinolone Side Effects",
-                "Sulfonamide Allergies",
-                "Amphotericin B Toxicity",
-                "Cyanide Poisoning Treatment",
-                "Serotonin Syndrome",
-                "Drug-Induced Lupus",
-                "Clinical Applications",
-                "Comorbid Conditions",
-                "Adenosine",
-                "Adenosine Pharmacokinetics"
-            ],
-            "ECG (Electrocardiography)": [
-                "Atrial Fibrillation Management",
-                "Cardiology - ECG"
-            ],
-            "Radiology": [
-                "Achalasia Imaging",
-                "Cardiology - Nuclear Stress Testing",
-                "Cardiology - Stress Testing",
-                "Chronic Pancreatitis - Imaging"
-            ],
-            "Internal Medicine": [
-
-                "Acute Pancreatitis",
-                "Carcinoid Syndrome - Bronchial Exception",
-                "Carcinoid Syndrome - Cardiac Effects",
-                "Carcinoid Syndrome - Clinical Presentation",
-                "Carcinoid Syndrome - Definition",
-                "Carcinoid Syndrome - Diagnosis",
-                "Carcinoid Syndrome - Location",
-                "Carcinoid Syndrome - Niacin Deficiency",
-                "Carcinoid Syndrome - Treatment",
-                "Cardiology - Angina",
-                "Cardiology - Biomarkers",
-                "Cardiology - Diabetes",
-                "Cardiology - Differential Diagnosis",
-                "Cardiology - Hypertension",
-                "Cardiology - Lipid Management",
-                "Cardiology - Pericarditis",
-                "Cardiology - Risk Factors",
-                "Cardiology - Treatment",
-                "Cardiology",
-                "Celiac Disease - Associated Conditions",
-                "Celiac Disease - Clinical Presentations",
-                "Celiac Disease - Complications",
-                "Celiac Disease - Dermatitis Herpetiformis",
-                "Celiac Disease - Diagnosis Method",
-                "Celiac Disease - Diagnosis",
-                "Celiac Disease - Lymphoma Risk",
-                "Celiac Disease - Thyroid Interaction",
-                "Celiac Disease - Treatment",
-                "Celiac Disease - Unique Feature",
-                "Chronic Diarrhea - Artificial Sweeteners",
-                "Chronic Diarrhea - Carcinoid",
-                "Chronic Diarrhea - IBS vs Organic Disease",
-                "Chronic Diarrhea - Microscopic Colitis",
-                "Chronic Diarrhea - Small Bowel Bacterial Overgrowth",
-                "Chronic Pancreatitis - Diagnosis",
-                "Chronic Pancreatitis - Laboratory Finding",
-                "Chronic Pancreatitis - Treatment",
-                "Chronic Pancreatitis - Young Adults",
-                "Colon Cancer Screening",
-                "Colon Cancer",
-                "Constipation",
-                "Diarrhea",
-                "Diverticular Disease",
-                "Gastritis",
-                "Gastroenterology",
-                "Gastroparesis",
-                "GI Bleeding - Varices",
-                "GI Bleeding",
+            "Gastroenterology - IBD & IBS": [
                 "IBS - Clinical Presentation",
                 "IBS - Definition",
                 "IBS - Exclusion Criteria",
@@ -16249,7 +16791,21 @@
                 "IBS - Treatment Medications",
                 "IBS - Treatment",
                 "IBS - Workup",
-                "Inflammatory Bowel Disease",
+                "Inflammatory Bowel Disease"
+            ],
+            "Gastroenterology - Malabsorption": [
+                "Celiac Disease - Antibodies",
+                "Celiac Disease - Associated Conditions",
+                "Celiac Disease - Clinical Presentations",
+                "Celiac Disease - Complications",
+                "Celiac Disease - Dermatitis Herpetiformis",
+                "Celiac Disease - Diagnosis Method",
+                "Celiac Disease - Diagnosis",
+                "Celiac Disease - IgA Deficiency",
+                "Celiac Disease - Lymphoma Risk",
+                "Celiac Disease - Thyroid Interaction",
+                "Celiac Disease - Treatment",
+                "Celiac Disease - Unique Feature",
                 "Lactose Intolerance - Clinical Presentation",
                 "Lactose Intolerance - Diagnosis Method",
                 "Lactose Intolerance - Diagnosis",
@@ -16264,217 +16820,168 @@
                 "Malabsorption - Vitamin D Deficiency",
                 "Malabsorption - Vitamin K Deficiency",
                 "Malabsorption - Weight Loss",
-                "Peptic Ulcer Disease",
-                "Polyposis Syndromes",
-                "Pulmonology - Pulmonary Embolism",
-                "Zollinger-Ellison Syndrome",
-                "Achalasia",
-                "Achalasia Clinical Presentation",
-                "Achalasia Diagnosis",
-                "Achalasia Treatment",
-                "Alarm Features for Endoscopy",
-                "Chronic Cough and GERD",
-                "GERD Diagnosis",
-                "GERD Diagnostic Workup Order",
-                "GERD Surgical Treatment",
-                "Dysphagia Classification",
-                "Oropharyngeal Dysphagia",
-                "Diffuse Esophageal Spasm",
-                "Esophageal Spasm Diagnosis",
-                "Eosinophilic Esophagitis",
-                "Pill Esophagitis",
-                "Esophageal Cancer Presentation",
-                "Esophageal Cancer Risk Factors",
-                "Esophageal Cancer Prognosis",
-                "Scleroderma Esophageal Involvement",
-                "Schatzki's Ring vs PVS",
-                "Zenker Diverticulum",
-                "Mallory-Weiss Syndrome",
+                "Tropical Sprue vs Whipple - Treatment Duration",
+                "Whipple Disease - Diagnosis"
+            ],
+            "Gastroenterology - Other": [
+                "Carcinoid Syndrome - Bronchial Exception",
+                "Carcinoid Syndrome - Cardiac Effects",
+                "Carcinoid Syndrome - Clinical Presentation",
+                "Carcinoid Syndrome - Definition",
+                "Carcinoid Syndrome - Diagnosis",
+                "Carcinoid Syndrome - Location",
+                "Carcinoid Syndrome - Niacin Deficiency",
+                "Carcinoid Syndrome - Pathophysiology",
+                "Carcinoid Syndrome - Treatment",
+                "Diverticular Disease",
                 "Gastroparesis Diagnosis",
-                "Epigastric Pain Causes",
-                "Diabetes Classification",
-                "Diabetes - Type 1 vs Type 2",
-                "Diabetes Diagnosis",
-                "Diabetes Diagnosis Criteria",
-                "Diabetes Management",
-                "Diabetes Initial Treatment",
-                "Diabetes Complications",
-                "Diabetic Ketoacidosis",
-                "DKA Management",
-                "HONK Syndrome",
-                "Diabetic Nephropathy",
-                "Diabetic Neuropathy",
-                "Diabetic Retinopathy Screening",
-                "Microalbuminuria Definition",
-                "Lipid Goals in Diabetes",
-                "Insulinoma Diagnosis",
-                "Factitious Hyperinsulinism",
-                "Addison Disease",
-                "Adrenal Crisis",
-                "Adrenal Insufficiency",
-                "Congenital Adrenal Hyperplasia",
-                "C-11 Hydroxylase Deficiency",
-                "Primary Hyperaldosteronism",
-                "Hyperaldosteronism Screening",
-                "Bartter Syndrome",
-                "Cushing Syndrome Etiology",
-                "Cushing Syndrome Screening",
-                "ACTH Levels in Cushing",
-                "Pheochromocytoma",
-                "Pheochromocytoma Diagnosis",
-                "Pheochromocytoma Management",
-                "Endocrinology - Hypopituitarism",
-                "Endocrinology - Acromegaly",
-                "Endocrinology - Acromegaly Treatment",
-                "Endocrinology - Hyperprolactinemia",
-                "Endocrinology - Hyperprolactinemia Treatment",
-                "Endocrinology - Diabetes Insipidus",
-                "Endocrinology - SIADH",
-                "Hypothyroidism Causes",
-                "Hypothyroidism Laboratory Diagnosis",
-                "Adult Hypothyroidism Symptoms",
-                "Congenital Hypothyroidism",
-                "Myxedema Coma",
-                "Hyperthyroidism Symptoms",
-                "Hyperthyroidism Physical Exam",
-                "Graves Disease Demographics",
-                "Graves Disease Risk Factors",
-                "Graves Disease Laboratory Findings",
-                "Toxic Multinodular Goiter",
-                "Endocrinology - Thyroid Function",
-                "Endocrinology - Thyroid Function Tests",
-                "Thyroid Storm",
-                "Hashimoto Thyroiditis",
-                "Subacute Thyroiditis",
-                "Subacute Thyroiditis Characteristics",
-                "Lymphocytic Thyroiditis",
-                "Thyroiditis Types",
-                "Thyroid Nodule Malignancy Risk",
-                "Thyroid Cancer Types",
-                "Thyroid Cancer Diagnosis",
-                "Medullary Thyroid Carcinoma",
-                "MEN Syndromes",
-                "Primary Hyperparathyroidism",
-                "Secondary vs Primary Hyperparathyroidism",
-                "Hyperparathyroidism Surgery Indications",
-                "Familial Hypocalciuric Hypercalcemia",
-                "Hypercalcemia Causes",
-                "Hypercalcemia Symptoms",
-                "Hypercalcemia Treatment",
-                "Hungry Bones Syndrome",
-                "Hypocalcemia Causes",
-                "Hypocalcemia Signs",
-                "Calcium Correction Formula",
-                "Hypogonadism",
-                "Klinefelter Syndrome",
-                "Rheumatoid Arthritis",
-                "Rheumatoid Arthritis Diagnosis",
+                "Gastroparesis",
+                "GI Bleeding - Varices",
+                "GI Bleeding",
+                "Gastroenterology"
+            ],
+            "Colorectal & GI Cancer": [
+                "Colon Cancer Screening - High Risk",
+                "Colon Cancer Screening",
+                "Colon Cancer",
+                "Familial Adenomatous Polyposis",
+                "Lynch Syndrome",
+                "Polyposis Syndromes"
+            ],
+            "Rheumatology - Inflammatory Arthritis": [
+                "Ankylosing Spondylitis - Clinical Presentation",
+                "Ankylosing Spondylitis - Demographics",
+                "Ankylosing Spondylitis - Extraarticular Manifestations",
+                "Ankylosing Spondylitis - Treatment",
+                "Enteropathic Arthropathy",
+                "Psoriatic Arthritis",
+                "Reactive Arthritis - Infectious Causes",
                 "Rheumatoid Arthritis - Atlantoaxial Subluxation",
                 "Rheumatoid Arthritis - Baker Cyst",
                 "Rheumatoid Arthritis - Preoperative Screening",
-                "Osteoarthritis",
-                "Osteoarthritis Treatment",
-                "Septic Arthritis",
+                "Rheumatoid Arthritis Diagnosis",
+                "Rheumatoid Arthritis",
+                "Septic Arthritis"
+            ],
+            "Rheumatology - Crystal Arthropathy": [
                 "Crystal Arthropathy",
-                "Gout",
                 "Gout Diagnosis",
                 "Gout Treatment",
+                "Gout",
                 "Hyperuricemia",
-                "Pseudogout",
-                "Arthritis Evaluation",
-                "Ankylosing Spondylitis - Demographics",
-                "Ankylosing Spondylitis - Clinical Presentation",
-                "Ankylosing Spondylitis - Extraarticular Manifestations",
-                "Ankylosing Spondylitis - Treatment",
-                "Psoriatic Arthritis",
-                "Enteropathic Arthropathy",
-                "Reactive Arthritis - Infectious Causes",
-                "Systemic Lupus Erythematosus - Demographics",
-                "Systemic Lupus Erythematosus - Environmental Triggers",
-                "Systemic Lupus Erythematosus - Diagnostic Criteria",
-                "Systemic Lupus Erythematosus - Laboratory Tests",
-                "Systemic Lupus Erythematosus - Skin Manifestations",
-                "Systemic Lupus Erythematosus - Arthritis",
-                "Systemic Lupus Erythematosus - Renal Involvement",
-                "Systemic Lupus Erythematosus - Pregnancy",
+                "Pseudogout"
+            ],
+            "Rheumatology - Connective Tissue Diseases": [
+                "Antinuclear Antibodies",
                 "Antiphospholipid Syndrome",
-                "Sjögren Syndrome - Clinical Presentation",
-                "Scleroderma - Clinical Presentation",
-                "Scleroderma Treatment",
-                "Scleroderma - Renal Crisis",
+                "CREST Syndrome - Antibodies",
                 "CREST Syndrome",
-                "Raynaud Phenomenon",
-                "Inflammatory Myopathies",
                 "Dermatomyositis",
-                "Polyarteritis Nodosa",
-                "Wegener Granulomatosis",
+                "Drug-Induced Lupus",
+                "Inflammatory Myopathies",
+                "Raynaud Phenomenon",
+                "Scleroderma - Clinical Presentation",
+                "Scleroderma - Renal Crisis",
+                "Scleroderma Treatment",
+                "Sjögren Syndrome - Antibodies",
+                "Sjögren Syndrome - Clinical Presentation",
+                "Specific Autoantibodies",
+                "Systemic Lupus Erythematosus - Arthritis",
+                "Systemic Lupus Erythematosus - Demographics",
+                "Systemic Lupus Erythematosus - Diagnostic Criteria",
+                "Systemic Lupus Erythematosus - Environmental Triggers",
+                "Systemic Lupus Erythematosus - Laboratory Tests",
+                "Systemic Lupus Erythematosus - Pregnancy",
+                "Systemic Lupus Erythematosus - Renal Involvement",
+                "Systemic Lupus Erythematosus - Skin Manifestations"
+            ],
+            "Rheumatology - Vasculitis": [
+                "ANCA Testing",
                 "Churg-Strauss Syndrome",
-                "Temporal Arteritis",
+                "Polyarteritis Nodosa",
                 "Temporal Arteritis Treatment",
-                "Hyperlipidemia - Cardiovascular Risk",
-                "Emergency Medicine",
-                "Emergency Medicine - Diabetic Ketoacidosis"
+                "Temporal Arteritis",
+                "Wegener Granulomatosis"
             ],
-            "Surgery": [
-
+            "Rheumatology - Osteoarthritis & General": [
+                "Arthritis Evaluation",
+                "Comorbid Conditions",
+                "Osteoarthritis Treatment",
+                "Osteoarthritis",
+                "Synovial Fluid Analysis"
             ],
-            "Obstetrics and Gynecology (ObGyn)": [
+            "Cardiology - Ischemic Heart Disease": [
+                "Cardiology - Angina",
+                "Cardiology - Biomarkers",
+                "Cardiology - Nuclear Stress Testing",
+                "Cardiology - Stress Testing"
+            ],
+            "Cardiology - General": [
+                "Atrial Fibrillation Management",
+                "Cardiology - Diabetes",
+                "Cardiology - Differential Diagnosis",
+                "Cardiology - ECG",
+                "Cardiology - Hypertension",
+                "Cardiology - Lipid Management",
+                "Cardiology - Pericarditis",
+                "Cardiology - Risk Factors",
+                "Cardiology - Treatment",
+                "Cardiology"
+            ],
+            "Preventive Medicine - Screening": [
                 "Breast Cancer Prevention",
-                "Breast Cancer Screening"
-            ],
-            "Pediatrics": [
-
-            ],
-            "Psychiatry": [
-
-            ],
-            "Critical Care, Intensive Therapy and Anesthesiology": [
-
-            ],
-            "Ethics, Psychiatry and Healthcare": [
-
-            ],
-            "Behavioral Sciences and Biostatistics": [
-
-            ],
-            "Statistics": [
-
-            ],
-            "Preventive Medicine": [
+                "Breast Cancer Screening",
                 "Cancer Screening Principles",
+                "Cervical Cancer Screening Alternative",
+                "Cervical Cancer Screening",
+                "Lung Cancer Screening",
                 "Preventive Medicine - AAA Screening",
-                "Preventive Medicine - Alcohol Screening",
                 "Preventive Medicine - Cholesterol Screening",
                 "Preventive Medicine - Diabetes Screening",
                 "Preventive Medicine - Osteoporosis Screening",
                 "Preventive Medicine - Osteoporosis",
-                "Preventive Medicine - Smoking Cessation",
-                "Preventive Medicine - Vaccination",
-                "Cervical Cancer Screening",
-                "Cervical Cancer Screening Alternative",
-                "Colon Cancer Screening",
-                "Colon Cancer Screening - High Risk",
-                "Lung Cancer Screening",
-                "Prostate Cancer Screening",
+                "Prostate Cancer Screening"
+            ],
+            "Preventive Medicine - Behavioral": [
+                "Preventive Medicine - Alcohol Screening",
+                "Preventive Medicine - Smoking Cessation"
+            ],
+            "Preventive Medicine - Vaccination": [
                 "Hepatitis B Vaccination Indications",
-                "Hepatitis C Treatment",
-                "HIV Prophylaxis",
                 "HPV Vaccination",
-                "Influenza Treatment",
                 "Influenza Vaccination",
                 "MMR Vaccination",
-                "Pneumococcal Vaccination",
                 "Pneumococcal Revaccination",
+                "Pneumococcal Vaccination",
+                "Preventive Medicine - Vaccination",
                 "Tetanus/Diphtheria Immunization",
+                "Travel Medicine - Hepatitis A",
+                "Travel Medicine - Timing",
                 "Typhoid Vaccination",
                 "Varicella Vaccination Contraindications",
-                "Zoster (Shingles) Vaccination",
-                "Travel Medicine - Hepatitis A",
-                "Travel Medicine - Timing"
+                "Zoster (Shingles) Vaccination"
+            ],
+            "Travel Medicine": [
+                "Hepatitis C Treatment"
+            ],
+            "Emergency Medicine": [
+                "Emergency Medicine"
+            ],
+            "Pulmonology": [
+                "Pulmonology - Pulmonary Embolism"
             ]
-        };
+        }
 
         const difficulties = ["All", "Easy", "Medium", "Hard", "Real"];
+
+        // ESL-friendly difficulty descriptions
+        const difficultyDescriptions = {
+            "All": "All difficulty levels",
+            "Easy": "Basic concepts and terminology",
+            "Medium": "Standard exam-level questions",
+            "Hard": "Complex clinical scenarios", 
+            "Real": "Actual exam-style questions"
+        };
 
         function USMLEQuiz() {
             const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -16486,26 +16993,26 @@
             const [selectedDifficulty, setSelectedDifficulty] = useState("All");
             const [quizStarted, setQuizStarted] = useState(false);
             const [filteredQuestions, setFilteredQuestions] = useState(questionBank);
-            const [filteredTopics, setfilteredTopics] = useState("None");
+            const [filteredTopics, setFilteredTopics] = useState("None");
             const [questionOrder, setQuestionOrder] = useState([]);
+            const [showSubtopics, setShowSubtopics] = useState(false);
 
+            // Filter questions based on selected criteria
             useEffect(() => {
                 let filtered = questionBank;
+                let isArch = topics.some(t => t.topics.includes(selectedTopic) && t.arch !== "All");
 
                 if (selectedTopic !== "All") {
-                    // First, check if selectedTopic is a specific topic (e.g., "Dopaminergic Pathways")
-                    let topicObj = topics.some(t => t.topics.includes(selectedTopic) && t.arch !== "All");
-                    if (!topicObj) {
-                        // Otherwise, check if it's an arch (e.g., "Basic Sciences")
-                        topicObj = topics.find(t => (t.arch === selectedTopic || t.topics.includes(selectedTopic)) && t.arch !== "All"
+                    if (!isArch) {
+                        let topicObj = topics.find(t => 
+                            (t.arch === selectedTopic || t.topics.includes(selectedTopic)) && t.arch !== "All"
                         );
 
                         const mappedTopics = topicObj.topics.map(t => topicMap[t] || t)
                             .filter(t => t !== undefined)
                             .flat();
                         filtered = filtered.filter(q => mappedTopics.includes(q.topic));
-                    }
-                    else {
+                    } else {
                         const mappedTopics = topicMap[selectedTopic] || [];
                         filtered = filtered.filter(q => mappedTopics.includes(q.topic));
                     }
@@ -16513,13 +17020,13 @@
 
                 if (selectedDifficulty !== "All") {
                     filtered = filtered.filter(q => q.difficulty === selectedDifficulty);
+                    
                     const reversedTopicMap = Object.entries(topicMap).reduce((acc, [key, value]) => {
                         acc[value] = key;
                         return acc;
-                        }, {});
+                    }, {});
 
                     const flatTopicMap = {};
-
                     for (const [topicsString, category] of Object.entries(reversedTopicMap)) {
                         const topics = topicsString.split(',').map(t => t.trim());
                         for (const topic of topics) {
@@ -16528,13 +17035,10 @@
                     }
 
                     const topicList = Object.values(filtered).map(x => x.topic);
-
                     const categorizedTopics = topicList.map(topic => (flatTopicMap[topic] || 'Unknown'));
-
-                    setfilteredTopics(categorizedTopics || []);
-                }
-                else {
-                    setfilteredTopics("None");
+                    setFilteredTopics(categorizedTopics || []);
+                } else {
+                    setFilteredTopics("None");
                 }
 
                 setFilteredQuestions(filtered);
@@ -16543,12 +17047,16 @@
                 const indices = Array.from({ length: filtered.length }, (_, i) => i);
                 setQuestionOrder(indices.sort(() => Math.random() - 0.5));
 
+                resetQuizState();
+            }, [selectedTopic, selectedDifficulty]);
+
+            const resetQuizState = () => {
                 setCurrentQuestion(0);
                 setSelectedAnswer(null);
                 setShowExplanation(false);
                 setScore(0);
                 setAnsweredQuestions([]);
-            }, [selectedTopic, selectedDifficulty]);
+            };
 
             const handleAnswerSelect = (answerIndex) => {
                 if (showExplanation) return;
@@ -16578,43 +17086,27 @@
                 setShowExplanation(true);
             };
 
-            const handleNextQuestion = () => {
-                if (currentQuestion < questionOrder.length - 1) {
-                    setCurrentQuestion(currentQuestion + 1);
-                } else {
+            const handleNavigation = (direction) => {
+                const nextIndex = direction === 'next' ? currentQuestion + 1 : currentQuestion - 1;
+                
+                if (direction === 'next' && nextIndex >= questionOrder.length) {
                     setCurrentQuestion(questionOrder.length);
+                    return;
                 }
 
-                // Check if already answered
-                const nextQuestionIndex = questionOrder[currentQuestion + 1];
-                const nextQuestion = filteredQuestions[nextQuestionIndex];
-                const alreadyAnswered = answeredQuestions.some(ans => ans.questionId === nextQuestion.id);
+                setCurrentQuestion(nextIndex);
 
-                setSelectedAnswer(null);
-                setShowExplanation(alreadyAnswered);
-            };
-
-            const handlePreviousQuestion = () => {
-                if (currentQuestion > 0) {
-                    setCurrentQuestion(currentQuestion - 1);
-                } else {
-                    setCurrentQuestion(0);
-                }
-                // Check if already answered
-                const previousQuestionIndex = questionOrder[currentQuestion - 1];
-                const previousQuestion = filteredQuestions[previousQuestionIndex];
-                const alreadyAnswered = answeredQuestions.some(ans => ans.questionId === previousQuestion.id);
+                // Check if the question was already answered
+                const questionIndex = questionOrder[nextIndex];
+                const question = filteredQuestions[questionIndex];
+                const alreadyAnswered = answeredQuestions.some(ans => ans.questionId === question.id);
 
                 setSelectedAnswer(null);
                 setShowExplanation(alreadyAnswered);
             };
 
             const handleRestartQuiz = () => {
-                setCurrentQuestion(0);
-                setSelectedAnswer(null);
-                setShowExplanation(false);
-                setScore(0);
-                setAnsweredQuestions([]);
+                resetQuizState();
                 setQuizStarted(false);
 
                 // Regenerate random order
@@ -16622,23 +17114,32 @@
                 setQuestionOrder(indices.sort(() => Math.random() - 0.5));
             };
 
+            const getDifficultyBadgeClass = (difficulty) => {
+                return `difficulty-badge difficulty-${difficulty.toLowerCase()}`;
+            };
+
             const startQuiz = () => {
                 setQuizStarted(true);
             };
 
+            // Render no questions available screen
             if (quizStarted && filteredQuestions.length === 0) {
                 return (
                     <div className="container">
                         <div className="header">
                             <h1>USMLE Quiz</h1>
+                            <p>Practice makes perfect</p>
                         </div>
                         <div className="quiz-container">
-                            <div style={{ textAlign: 'center', padding: '40px' }}>
-                                <h3>No questions available for the selected criteria.</h3>
-                                <p>Please select different topic or difficulty filters.</p>
+                            <div className="no-questions-message">
+                                <h3>📚 No Questions Available</h3>
+                                <p>We couldn't find any questions matching your selected criteria.</p>
+                                <div className="accessibility-note">
+                                    Try selecting different topics or difficulty levels to find questions.
+                                </div>
                                 <br />
                                 <button className="btn btn-primary" onClick={handleRestartQuiz}>
-                                    Take Another Quiz
+                                    📝 Choose Different Options
                                 </button>
                             </div>
                         </div>
@@ -16646,75 +17147,128 @@
                 );
             }
 
+            // Render quiz setup screen
             if (!quizStarted) {
+                const selectedArchTopic = topics.find(t => 
+                    (t.arch === selectedTopic || t.topics.includes(selectedTopic)) && t.arch !== "All"
+                );
+
                 return (
                     <div className="container">
                         <div className="header">
-                            <h1>USMLE Quiz</h1>
+                            <h1> USMLE Quiz</h1>
+                            <p>Master medical knowledge through practice</p>
                         </div>
 
                         <div className="quiz-container">
-                            <h2 style={{ marginBottom: '20px', color: '#2c3e50' }}>Customize Your Quiz</h2>
+                            <h2 style={{ marginBottom: '24px', color: '#1e293b', fontSize: '1.6rem' }}>
+                                📋 Customize Your Quiz
+                            </h2>
 
-                            <div style={{ marginBottom: '25px' }}>
-                                <h4 style={{ marginBottom: '10px', color: '#34495e' }}>Select Topic:</h4>
-                                <div className="topic-selector">
-                                    {topics.map(topic => (
-                                        <button
-                                            key={topic.arch}
-                                            className={`topic-btn ${selectedTopic === topic.arch || topic.arch !== "All" && topic.topics.includes(selectedTopic) ? 'active' : '' &&
-                                                filteredTopics.includes(q => topic.topics.includes(q) ? q : '') ? 'topic-enabled' : ''}`}
-                                            onClick={() => setSelectedTopic(topic.arch)}
-                                        >
-                                            {topic.arch}
-                                        </button>
-                                    ))}
-                                    {(() => {
-                                        const selectedArch = topics.find(t =>
-                                            (t.arch === selectedTopic || t.topics.includes(selectedTopic)) &&
-                                            t.arch !== "All");
-                                        if (selectedArch) {
-                                            return (
-                                                <div style={{ marginTop: '10px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                                    {selectedArch.topics.map(subtopic => (
-                                                        <button
-                                                            key={subtopic}
-                                                            className={`topic-btn ${selectedTopic === subtopic ? 'active' : ''} ${filteredTopics.includes(subtopic) ? 'topic-enabled' : ''}`}
-                                                            onClick={() => setSelectedTopic(subtopic)}
-                                                        >
-                                                            {subtopic}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            );
-                                        }
-                                        return null;
-                                    })()}
-                                </div>
-                            </div>
-
-                            <div style={{ marginBottom: '30px' }}>
-                                <h4 style={{ marginBottom: '10px', color: '#34495e' }}>Select Difficulty:</h4>
+                            <div className="filter-section">
+                                <h4 className="filter-title">Select Difficulty Level:</h4>
                                 <div className="topic-selector">
                                     {difficulties.map(difficulty => (
                                         <button
                                             key={difficulty}
                                             className={`topic-btn ${selectedDifficulty === difficulty ? 'active' : ''}`}
                                             onClick={() => setSelectedDifficulty(difficulty)}
+                                            title={difficultyDescriptions[difficulty]}
                                         >
                                             {difficulty}
                                         </button>
                                     ))}
                                 </div>
+                                <div className="accessibility-note">
+                                    💡 Tip: Click on a difficulty to highlight what subjects are available for it
+                                     (Real means actual USMLE questions)
+                                </div>
                             </div>
 
-                            <div style={{ textAlign: 'center' }}>
-                                <p style={{ marginBottom: '20px', fontSize: '1.1rem', color: '#7f8c8d' }}>
-                                    {filteredQuestions.length} questions available
-                                </p>
-                                <button className="btn btn-primary" onClick={startQuiz}>
-                                    Start Quiz
+                            <div className="filter-section">
+                                <h4 className="filter-title">Select Topic Area:</h4>
+                                <div className="topic-selector">
+                                    {topics.map(topic => (
+                                        <button
+                                            key={topic.arch}
+                                            className={`topic-btn ${
+                                                selectedTopic === topic.arch || 
+                                                (topic.arch !== "All" && topic.topics.includes(selectedTopic)) ? 'active' : ''
+                                            } ${
+                                                Array.isArray(filteredTopics) && 
+                                                topic.arch !== "All" && 
+                                                filteredTopics.some(q => topic.topics.includes(q)) ? 'topic-enabled' : ''
+                                            }`}
+                                            onClick={() => {
+                                                setSelectedTopic(topic.arch);
+                                                setShowSubtopics(topic.arch !== "All" && topic.topics.length > 0);
+                                            }}
+                                        >
+                                            {topic.arch}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {selectedArchTopic && selectedArchTopic.topics.length > 0 && (
+                                    <div className="subtopics-container">
+                                        <div className="subtopics-label">🔍 Specific Topics:</div>
+                                        <div className="topic-selector">
+                                            {selectedArchTopic.topics.map(subtopic => (
+                                                <button
+                                                    key={subtopic}
+                                                    className={`topic-btn ${selectedTopic === subtopic ? 'active' : ''} ${
+                                                        Array.isArray(filteredTopics) && filteredTopics.includes(subtopic) ? 'topic-enabled' : ''
+                                                    }`}
+                                                    onClick={() => setSelectedTopic(subtopic)}
+                                                >
+                                                    {subtopic}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="accessibility-note">
+                                    💡 Tip: Selecting a specific topic will add other related topics
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+                                <div style={{ 
+                                    marginBottom: '24px', 
+                                    padding: '16px', 
+                                    background: 'linear-gradient(135deg, #f0f9ff, #e0f2fe)', 
+                                    borderRadius: '12px',
+                                    border: '1px solid #0ea5e9'
+                                }}>
+                                    <p style={{ 
+                                        fontSize: '1.2rem', 
+                                        color: '#0c4a6e', 
+                                        fontWeight: '600',
+                                        margin: 0
+                                    }}>
+                                        {filteredQuestions.length} questions ready for practice
+                                    </p>
+                                    <p style={{ 
+                                        fontSize: '0.95rem', 
+                                        color: '#0284c7', 
+                                        margin: '4px 0 0 0'
+                                    }}>
+                                    </p>
+                                </div>
+                                <button 
+                                    className="btn btn-primary" 
+                                    onClick={startQuiz}
+                                    style={{ fontSize: '1.1rem', padding: '16px 32px' }}
+                                    disabled={filteredQuestions.length === 0}
+                                >
+                                 Start Quiz
                                 </button>
+                                {filteredQuestions.length === 0 && (
+                                    <div className="accessibility-note" style={{ marginTop: '12px' }}>
+                                        Please select different options to find available questions
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -16725,98 +17279,116 @@
             const question = filteredQuestions[questionIndex];
             const progress = ((currentQuestion + 1) / questionOrder.length) * 100;
 
+            // Render quiz completion screen
             if (currentQuestion >= questionOrder.length) {
                 const percentage = Math.round((score / questionOrder.length) * 100);
+                const getScoreMessage = (score) => {
+                    if (score >= 90) return { message: "🎉 Excellent!", color: "#10b981" };
+                    if (score >= 80) return { message: "🌟 Great job!", color: "#059669" };
+                    if (score >= 70) return { message: "👍 Good work!", color: "#0d9488" };
+                    if (score >= 60) return { message: "📚 You're improving!", color: "#0891b2" };
+                    return { message: "Practice makes perfect!", color: "#0284c7" };
+                };
+
+                const scoreData = getScoreMessage(percentage);
+
                 return (
                     <div className="container">
                         <div className="header">
-                            <h1>Quiz Complete!</h1>
-                            <p>Your USMLE Pharmacology Results</p>
+                            <h1> Quiz Complete!</h1>
+                            <p>Your USMLE Practice Results</p>
                         </div>
 
                         <div className="quiz-container">
                             <div className="stats">
                                 <div className="stat-card">
                                     <div className="stat-value">{score}</div>
-                                    <div className="stat-label">Correct Answers</div>
+                                    <div className="stat-label">✅ Correct Answers</div>
                                 </div>
                                 <div className="stat-card">
                                     <div className="stat-value">{questionOrder.length}</div>
-                                    <div className="stat-label">Total Questions</div>
+                                    <div className="stat-label">📝 Total Questions</div>
                                 </div>
                                 <div className="stat-card">
-                                    <div className="stat-value">{percentage}%</div>
-                                    <div className="stat-label">Score</div>
+                                    <div className="stat-value" style={{ color: scoreData.color }}>{percentage}%</div>
+                                    <div className="stat-label"> Final Score</div>
                                 </div>
                             </div>
 
-                            <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                                <h2 style={{ color: '#34495e', marginBottom: '10px' }}>Review Your Answers</h2>
-                                <h3 style={{ color: percentage >= 70 ? '#27ae60' : '#e74c3c', marginBottom: '20px' }}>
-                                    {percentage >= 90 ? 'Excellent!' :
-                                        percentage >= 70 ? 'Good job!' :
-                                            'You can do better!'}
+                            <div style={{ 
+                                textAlign: 'center', 
+                                marginTop: '32px',
+                                padding: '24px',
+                                background: 'linear-gradient(135deg, #f8fafc, #f1f5f9)',
+                                borderRadius: '16px',
+                                border: '1px solid #e2e8f0'
+                            }}>
+                                <h2 style={{ color: '#1e293b', marginBottom: '12px', fontSize: '1.5rem' }}>
+                                    Review
+                                </h2>
+                                <h3 style={{ color: scoreData.color, marginBottom: '24px', fontSize: '1.3rem' }}>
+                                    {scoreData.message}
                                 </h3>
-                                <div style={{
-                                    maxHeight: '400px',
+                                
+                                <div className="quiz-summary" style={{ 
+                                    maxHeight: '400px', 
                                     overflowY: 'auto',
-                                    textAlign: 'left',
-                                    margin: '0 auto',
-                                    background: '#f5f7fa',
-                                    borderRadius: '15px',
-                                    padding: '20px',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-                                    marginBottom: '25px'
+                                    textAlign: 'left'
                                 }}>
                                     {answeredQuestions.map((ans, idx) => {
                                         const q = filteredQuestions.find(q => q.id === ans.questionId);
                                         return (
-                                            <div key={idx} style={{
-                                                marginBottom: '25px',
-                                                borderBottom: '1px solid #e0e6ed',
-                                                paddingBottom: '15px'
-                                            }}>
-                                                <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>
-                                                    Question {idx + 1}: {q.topic} ({q.difficulty})
+                                            <div key={idx} className={`summary-item ${ans.isCorrect ? 'correct' : 'incorrect'}`}>
+                                                <div className="summary-header">
+                                                    <div>
+                                                        <strong style={{ color: '#4f46e5' }}>
+                                                            Question {idx + 1}: {q.topic}
+                                                        </strong>
+                                                        <span className={getDifficultyBadgeClass(q.difficulty)}>
+                                                            {q.difficulty}
+                                                        </span>
+                                                    </div>
+                                                    <div className={`summary-status ${ans.isCorrect ? 'correct' : 'incorrect'}`}>
+                                                        {ans.isCorrect ? '✅ Correct' : '❌ Incorrect'}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    style={{ marginBottom: '10px', color: '#2c3e50' }}
-                                                    className="question-text"
-                                                    dangerouslySetInnerHTML={{ __html: q.question }}
+                                                
+                                                <div 
+                                                    style={{ marginBottom: '12px', color: '#374151', fontSize: '0.95rem' }}
+                                                    dangerouslySetInnerHTML={{ __html: q.question.length > 100 ? 
+                                                        q.question.substring(0, 100) + '...' : q.question 
+                                                    }}
                                                 />
-                                                <div>
-                                                    <span style={{
-                                                        fontWeight: 'bold',
-                                                        color: ans.isCorrect ? '#27ae60' : '#e74c3c'
-                                                    }}>
-                                                        Your answer: {q.options[ans.selectedAnswer] || <em>None</em>}
-                                                    </span>
-                                                    {ans.isCorrect ? (
-                                                        <span style={{ marginLeft: '10px', color: '#27ae60' }}>✔ Correct</span>
-                                                    ) : (
-                                                        <span style={{ marginLeft: '10px', color: '#e74c3c' }}>✘ Incorrect</span>
-                                                    )}
+                                                
+                                                <div style={{ marginBottom: '8px' }}>
+                                                    <strong style={{ color: ans.isCorrect ? '#059669' : '#dc2626' }}>
+                                                        Your answer: {q.options[ans.selectedAnswer] || <em>None selected</em>}
+                                                    </strong>
                                                 </div>
+                                                
                                                 {!ans.isCorrect && (
-                                                    <div style={{ marginTop: '5px', color: '#34495e' }}>
-                                                        <strong>Correct answer:</strong> {q.options[q.correct]}
+                                                    <div style={{ marginBottom: '12px', color: '#059669', fontWeight: '500' }}>
+                                                        ✓ Correct answer: {q.options[q.correct]}
                                                     </div>
                                                 )}
+                                                
                                                 <div style={{
-                                                    background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                                                    background: 'linear-gradient(135deg, #f0fdf4, #ecfdf5)',
                                                     borderRadius: '8px',
                                                     padding: '12px',
-                                                    marginTop: '10px',
-                                                    fontSize: '0.98rem'
+                                                    fontSize: '0.9rem',
+                                                    color: '#065f46',
+                                                    borderLeft: '3px solid #10b981'
                                                 }}>
-                                                    <strong>Explanation:</strong> {q.explanation}
+                                                    <strong>💡 Explanation:</strong> {q.explanation}
                                                 </div>
                                             </div>
                                         );
                                     })}
                                 </div>
-                                <button className="btn btn-primary" onClick={handleRestartQuiz}>
-                                    Take Another Quiz
+                                
+                                <button className="btn btn-primary" onClick={handleRestartQuiz} style={{ marginTop: '20px' }}>
+                                    🔄 Take Another Quiz
                                 </button>
                             </div>
                         </div>
@@ -16824,49 +17396,81 @@
                 );
             }
 
+            // Render main quiz interface
             return (
                 <div className="container">
                     <div className="header">
-                        <h1>USMLE Quiz</h1>
+                        <h1> USMLE Quiz</h1>
+                        <p>Test your medical knowledge</p>
                     </div>
 
                     <div className="quiz-container">
-                        <div className="progress-bar">
-                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                        <div className="progress-container">
+                            <div className="progress-label">
+                                <span>Progress: Question {currentQuestion + 1} of {questionOrder.length}</span>
+                                <span>{Math.round(progress)}% Complete</span>
+                            </div>
+                            <div className="progress-bar">
+                                <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                            </div>
                         </div>
 
                         <div className="stats">
                             <div className="stat-card">
-                                <p className="stat-label">Question {currentQuestion + 1} of {questionOrder.length}</p>
-                                <h2 className="stat-value">{question.topic}</h2>
-                                <h3><span className="stat-label">Difficulty: </span><span className="stat-value">{question.difficulty}</span></h3>
+                                <div className="stat-value">{question.topic}</div>
+                                <div className="stat-label">⚡ Difficulty Level
+                                    <span className={getDifficultyBadgeClass(question.difficulty)} style={{ marginLeft: '8px' }}>
+                                        {question.difficulty}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <div className="question-card">
-                            <div className="question-number">Question {currentQuestion + 1}</div>
+                            <div className="question-number">
+                                🔖 Question {currentQuestion + 1}
+                            </div>
+                            
                             {question.image && (
-                                <img src={question.image} alt="Question" className="question-image" />
+                                <img src={question.image} alt="Medical diagram or chart" className="question-image" />
                             )}
+                            
                             <div
                                 className="question-text"
                                 dangerouslySetInnerHTML={{ __html: question.question }}
                             />
+                            
+                            <div className="accessibility-note" style={{ marginBottom: '20px' }}>
+                                💡 Select one answer below. Take your time to read each option carefully.
+                            </div>
+                            
                             <div className="options">
                                 {question.options.map((option, index) => (
                                     <div
                                         key={index}
-                                        className={`option ${selectedAnswer === index
-                                            ? "selected"
-                                            : ""
-                                            } ${showExplanation && index === question.correct ? "correct" : ""} ${showExplanation &&
-                                                selectedAnswer === index &&
-                                                selectedAnswer !== question.correct
+                                        className={`option ${
+                                            selectedAnswer === index ? "selected" : ""
+                                        } ${
+                                            showExplanation && index === question.correct ? "correct" : ""
+                                        } ${
+                                            showExplanation &&
+                                            selectedAnswer === index &&
+                                            selectedAnswer !== question.correct
                                                 ? "incorrect"
                                                 : ""
-                                            }`}
+                                        }`}
                                         onClick={() => handleAnswerSelect(index)}
+                                        role="button"
+                                        tabIndex={0}
+                                        onKeyPress={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                handleAnswerSelect(index);
+                                            }
+                                        }}
                                     >
+                                        <strong style={{ marginRight: '8px' }}>
+                                            {String.fromCharCode(65 + index)}.
+                                        </strong>
                                         {option}
                                     </div>
                                 ))}
@@ -16875,38 +17479,56 @@
 
                         {showExplanation && (
                             <div className="explanation">
-                                <h4>Explanation:</h4>
+                                <h4>💡 Explanation</h4>
                                 <p>{question.explanation}</p>
                             </div>
                         )}
 
-                        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px', flexWrap: 'wrap' }}>
-                            {currentQuestion > 0 && (
-                                <button className="btn btn-secondary" onClick={handlePreviousQuestion}>
-                                    Previous Question
-                                </button>
-                            )}
-                            <div style={{ display: 'flex', gap: '10px', float: 'right' }}>
-                                {!showExplanation && (
-                                    <button className="btn btn-secondary" onClick={() => setShowExplanation(true)}>
-                                        Show Explanation
+                        <div className="question-actions">
+                            <div className="action-group">
+                                {currentQuestion > 0 && (
+                                    <button 
+                                        className="btn btn-secondary" 
+                                        onClick={() => handleNavigation('prev')}
+                                    >
+                                        ⬅️ Previous
                                     </button>
                                 )}
+                            </div>
+                            
+                            <div className="action-group">
                                 {!showExplanation && (
+                                    <button 
+                                        className="btn btn-secondary" 
+                                        onClick={() => setShowExplanation(true)}
+                                        title="See explanation without submitting"
+                                    >
+                                        👁️ Show Explanation
+                                    </button>
+                                )}
+
+                                {!showExplanation && selectedAnswer !== null && (
                                     <button className="btn btn-primary" onClick={handleSubmitAnswer}>
-                                        Submit Answer
+                                        ✅ Submit Answer
                                     </button>
                                 )}
-                                {showExplanation && (
-                                    currentQuestion < questionOrder.length - 1 ? (
-                                        <button className="btn btn-secondary" onClick={handleNextQuestion}>
-                                            Next Question
-                                        </button>
-                                    ) : (
-                                        <button className="btn btn-primary" onClick={() => setCurrentQuestion(questionOrder.length)}>
-                                            View Results
-                                        </button>
-                                    )
+                                
+                                {showExplanation && currentQuestion < questionOrder.length - 1 && (
+                                    <button 
+                                        className="btn btn-primary" 
+                                        onClick={() => handleNavigation('next')}
+                                    >
+                                        Next ➡️
+                                    </button>
+                                )}
+                                
+                                {showExplanation && currentQuestion >= questionOrder.length - 1 && (
+                                    <button 
+                                        className="btn btn-primary" 
+                                        onClick={() => setCurrentQuestion(questionOrder.length)}
+                                    >
+                                         View Results
+                                    </button>
                                 )}
                             </div>
                         </div>
